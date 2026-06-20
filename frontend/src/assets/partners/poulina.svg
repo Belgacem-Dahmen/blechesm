@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64">
+  <!-- Body -->
+  <ellipse cx="28" cy="38" rx="18" ry="14" fill="white"/>
+  <!-- Head -->
+  <circle cx="44" cy="22" r="11" fill="white"/>
+  <!-- Beak -->
+  <polygon points="55,19 66,22 55,25" fill="white"/>
+  <!-- Tail feathers -->
+  <path d="M12,34 Q2,22 6,10 Q10,26 14,32" fill="white"/>
+  <!-- Comb -->
+  <path fill="white" d="M40,12 Q42,6 44,10 Q46,4 48,8 Q50,3 52,10 L52,12 Z"/>
+  <!-- Leg -->
+  <path fill="none" stroke="white" stroke-width="3" stroke-linecap="round" d="M24,52 L24,60 M20,60 L24,60 L28,60"/>
+  <text x="80" y="42" fill="white" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="800" letter-spacing="0.5">POULINA</text>
+</svg>

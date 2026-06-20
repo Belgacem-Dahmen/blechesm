@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" fill="none">
+  <!-- V accent line -->
+  <polyline points="2,8 22,38 42,8" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+  <text x="48" y="31" fill="white" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="22" letter-spacing="2">VINCI</text>
+</svg>

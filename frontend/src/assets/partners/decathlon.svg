@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <!-- D circle -->
+  <circle cx="24" cy="24" r="22" stroke="white" stroke-width="3"/>
+  <path d="M18,10 C18,10 34,10 34,24 C34,38 18,38 18,38 Z" fill="white"/>
+  <!-- Wordmark -->
+  <text x="56" y="30" fill="white" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="16" letter-spacing="1">DECATHLON</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" fill="none">
+  <!-- Rail lines -->
+  <line x1="2" y1="38" x2="118" y2="38" stroke="white" stroke-width="2" opacity="0.4"/>
+  <line x1="2" y1="42" x2="118" y2="42" stroke="white" stroke-width="2" opacity="0.4"/>
+  <text x="2" y="30" fill="white" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="28" letter-spacing="2">SNCF</text>
+</svg>

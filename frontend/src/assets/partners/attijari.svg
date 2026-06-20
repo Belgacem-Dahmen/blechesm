@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64">
+  <!-- Diamond mark -->
+  <polygon points="30,4 54,32 30,60 6,32" fill="none" stroke="white" stroke-width="6"/>
+  <polygon points="30,18 42,32 30,46 18,32" fill="white"/>
+  <text x="66" y="44" fill="white" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="800" letter-spacing="0.5">ATTIJARI</text>
+  <text x="66" y="58" fill="white" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="500" letter-spacing="1" opacity="0.75">BANK</text>
+</svg>
