@@ -5,14 +5,6 @@
     <div class="spray spray-cyan   absolute bottom-0 left-1/4  w-[400px] h-[400px]  translate-y-1/2" />
     <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
 
-    <!-- Inverted drip at top (paint dripping down from content above) -->
-    <div class="leading-[0] pointer-events-none">
-      <svg viewBox="0 0 1440 36" preserveAspectRatio="none" class="w-full h-9 block" aria-hidden="true">
-        <path d="M0,36 L1440,36 L1440,24 Q1400,4 1360,24 Q1320,36 1280,18 Q1240,4 1200,20 Q1160,36 1120,18 Q1080,4 1040,20 Q1000,36 960,16 Q920,4 880,18 Q840,36 800,14 Q760,4 720,16 Q680,36 640,18 Q600,4 560,20 Q520,36 480,16 Q440,4 400,22 Q360,36 320,16 Q280,4 240,20 Q200,36 160,16 Q120,4 80,18 Q40,36 0,18 Z"
-          fill="#080B14"
-        />
-      </svg>
-    </div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
 
@@ -31,7 +23,7 @@
           <h2 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tightest leading-[0.92] text-white">
             L'art dans la rue,<br />
             <span class="relative inline-block text-accent">
-              partout en France.
+              partout en Tunisie.
               <svg class="absolute -bottom-1 left-0 w-full" height="8" viewBox="0 0 400 8" preserveAspectRatio="none" fill="none" aria-hidden="true">
                 <path d="M0,4 Q50,0 100,4 Q150,8 200,4 Q250,0 300,4 Q350,8 400,4" stroke="#FF6B35" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
               </svg>

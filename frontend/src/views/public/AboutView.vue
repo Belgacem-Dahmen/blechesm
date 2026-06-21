@@ -61,11 +61,6 @@
         </div>
       </div>
 
-      <div class="absolute bottom-0 left-0 right-0 leading-[0] pointer-events-none">
-        <svg viewBox="0 0 1440 36" preserveAspectRatio="none" class="w-full h-9" aria-hidden="true">
-          <path d="M0,0 L1440,0 L1440,12 Q1400,36 1360,12 Q1320,0 1280,20 Q1240,36 1200,16 Q1160,0 1120,18 Q1080,36 1040,16 Q1000,0 960,22 Q920,36 880,18 Q840,4 800,24 Q760,36 720,20 Q680,4 640,22 Q600,36 560,18 Q520,2 480,20 Q440,36 400,16 Q360,0 320,20 Q280,36 240,16 Q200,0 160,22 Q120,36 80,18 Q40,4 0,18 Z" fill="#080B14"/>
-        </svg>
-      </div>
     </section>
 
     <!-- ── 2. MISSION ─────────────────────────────────────────────── -->
