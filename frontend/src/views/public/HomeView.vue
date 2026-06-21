@@ -463,18 +463,25 @@ const steps = [
 
 const testimonials = [
   {
-    quote: "Blechesm a transformé la façade de notre restaurant en véritable œuvre d'art. La visualisation IA nous a permis de valider le projet avant même le premier coup de pinceau.",
-    name: 'Arnaud Petit',
-    role: 'Gérant, Resto Le Midi — Marseille',
-    initials: 'AP',
+    quote: "Blechesm a métamorphosé la façade de notre restaurant en véritable œuvre d'art. La visualisation IA nous a permis de valider le projet avant même le premier coup de bombe.",
+    name: 'Mehdi Trabelsi',
+    role: 'Gérant, Dar El Kmem — Tunis',
+    initials: 'MT',
     color: '#FB923C',
   },
   {
-    quote: "Un travail exceptionnel pour notre gymnase municipal. L'équipe a été professionnelle du début à la fin, et le rendu dépasse toutes nos attentes.",
-    name: 'Camille Leroy',
-    role: 'Mairie de Nantes',
-    initials: 'CL',
+    quote: "Un travail exceptionnel pour notre salle de sport. L'équipe a été professionnelle du début à la fin, et le rendu dépasse toutes nos attentes. Nos membres adorent !",
+    name: 'Sonia Belhaj',
+    role: 'Directrice, FitClub Lac — Tunis',
+    initials: 'SB',
     color: '#22D3EE',
+  },
+  {
+    quote: "On leur a confié un mur de 80m² dans notre centre commercial. Résultat bluffant — le trafic visiteurs a augmenté depuis l'inauguration. Je recommande vivement.",
+    name: 'Karim Gharbi',
+    role: 'Responsable marketing, Azur City — Sousse',
+    initials: 'KG',
+    color: '#4ADE80',
   },
 ]
 
