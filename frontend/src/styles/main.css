@@ -4,12 +4,12 @@
 
 :root {
   /* Surfaces */
-  --bg:            #080B14;
-  --surface-1:     #0E121C;
-  --surface-2:     #141926;
-  --surface-3:     #1A2030;
-  --border:        #1F2638;
-  --border-strong: #2A3346;
+  --bg:            #08090D;
+  --surface-1:     #0D1018;
+  --surface-2:     #131620;
+  --surface-3:     #191D29;
+  --border:        #1D2235;
+  --border-strong: #272D42;
 
   /* Accent */
   --accent:        #3D7BFF;

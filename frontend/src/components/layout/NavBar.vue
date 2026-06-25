@@ -22,7 +22,7 @@
           <span
             class="nav-sticker hidden sm:inline-block"
             :class="scrolled ? 'opacity-60' : 'opacity-80'"
-          >SINCE '16</span>
+          >AI PLATFORM</span>
         </RouterLink>
 
         <!-- Desktop nav -->
@@ -113,7 +113,7 @@
 
           <!-- Bottom row -->
           <div class="flex items-center gap-3 mt-4 pt-4 border-t border-border">
-            <span class="nav-sticker opacity-60 text-[9px]">BLECHESM</span>
+            <span class="nav-sticker opacity-60 text-[9px]">BLECHESM AI</span>
             <span class="text-text-3 text-xs font-mono">Tunis · Sfax · Sousse</span>
           </div>
         </div>
@@ -130,7 +130,6 @@ const scrolled = ref(false)
 const mobileOpen = ref(false)
 
 const navLinks = [
-  { to: '/portfolio', label: 'Portfolio' },
   { to: '/a-propos', label: 'À propos' },
   { to: '/contact',  label: 'Contact' },
 ]

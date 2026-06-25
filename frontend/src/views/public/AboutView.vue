@@ -3,10 +3,9 @@
     <NavBar />
 
     <!-- ── 1. HERO ─────────────────────────────────────────────────── -->
-    <section class="relative pt-24 pb-32 overflow-hidden">
-      <div class="absolute inset-0 grid-bg opacity-15 pointer-events-none" />
-      <div class="spray spray-orange absolute -top-28 -right-28 w-[580px] h-[580px]" />
-      <div class="spray spray-cyan absolute -bottom-28 -left-28 w-[450px] h-[450px]" />
+    <section class="relative pt-24 pb-32 overflow-hidden hero-section">
+      <div class="absolute inset-0 grid-bg opacity-[0.07] pointer-events-none" />
+      <div class="spray spray-orange absolute -top-12 -right-12 w-[280px] h-[280px]" style="opacity:0.045" />
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-start justify-between gap-8">
@@ -407,6 +406,10 @@ const values = [
   filter: blur(90px);
   opacity: 0.07;
   pointer-events: none;
+}
+.hero-section {
+  background: linear-gradient(180deg, var(--color-surface-1) 0%, var(--color-bg) 90%);
+  border-bottom: 1px solid var(--color-border);
 }
 .spray-orange { background: #FF6B35; }
 .spray-pink   { background: #F472B6; }

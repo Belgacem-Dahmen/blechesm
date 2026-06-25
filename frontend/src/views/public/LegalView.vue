@@ -3,10 +3,9 @@
     <NavBar />
 
     <!-- ── HERO ─────────────────────────────────────────────────────── -->
-    <section class="relative pt-24 pb-24 overflow-hidden">
-      <div class="absolute inset-0 grid-bg opacity-15 pointer-events-none" />
-      <div class="spray spray-purple absolute -top-24 -right-24 w-[450px] h-[450px]" />
-      <div class="spray spray-cyan   absolute -bottom-24 -left-24 w-[350px] h-[350px]" />
+    <section class="relative pt-24 pb-24 overflow-hidden hero-section">
+      <div class="absolute inset-0 grid-bg opacity-[0.07] pointer-events-none" />
+      <div class="spray spray-purple absolute -top-12 -right-12 w-[240px] h-[240px]" style="opacity:0.04" />
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-3 mb-6 h-eyebrow">
@@ -206,6 +205,10 @@ const sections = [
   filter: blur(90px);
   opacity: 0.07;
   pointer-events: none;
+}
+.hero-section {
+  background: linear-gradient(180deg, var(--color-surface-1) 0%, var(--color-bg) 90%);
+  border-bottom: 1px solid var(--color-border);
 }
 .spray-purple { background: #A78BFA; }
 .spray-cyan   { background: #22D3EE; }
