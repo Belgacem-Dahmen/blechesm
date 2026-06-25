@@ -24,11 +24,6 @@ const routes = [
     component: () => import('@/views/public/QuoteRequestView.vue'),
   },
   {
-    path: '/portfolio',
-    name: 'portfolio',
-    component: () => import('@/views/public/PortfolioView.vue'),
-  },
-  {
     path: '/a-propos',
     name: 'about',
     component: () => import('@/views/public/AboutView.vue'),

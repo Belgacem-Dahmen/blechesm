@@ -3,47 +3,49 @@
     <NavBar />
 
     <!-- ── HERO ─────────────────────────────────────────────────────── -->
-    <section class="relative min-h-screen flex items-center pt-16 overflow-hidden">
-      <div class="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
-      <div class="spray spray-orange absolute -top-32 -right-32 w-[700px] h-[700px]" />
-      <div class="spray spray-cyan   absolute top-1/2 -left-32 -translate-y-1/2 w-[500px] h-[500px]" />
-      <div class="spray spray-pink   absolute -bottom-32 right-1/4 w-[450px] h-[450px]" />
+    <section class="relative min-h-screen flex items-center pt-16 overflow-hidden hero-section">
+      <div class="absolute inset-0 grid-bg opacity-[0.07] pointer-events-none" />
+      <div class="spray spray-orange absolute -top-16 -right-16 w-[380px] h-[380px]" style="opacity:0.045" />
 
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24 w-full">
         <div class="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
 
           <!-- Left: text -->
           <div>
             <div class="flex items-center gap-3 mb-6 hero-eyebrow">
-              <Pill warm>Art Mural &amp; Graffiti Professionnel</Pill>
+              <Pill warm>Blechesm AI — Visualisation &amp; Art Urbain</Pill>
               <svg width="48" height="22" viewBox="0 0 48 22" class="text-warning opacity-60 hidden sm:block" fill="none" aria-hidden="true">
                 <path d="M3,11 C11,4 28,4 40,11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 <path d="M34,6 L41,12 L33,16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
 
-            <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tightest leading-[0.9] mb-6 hero-title">
-              Votre mur,<br />
-              <span class="text-accent">votre fresque.</span><br />
+            <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tightest leading-[1.05] mb-6 hero-title">
+              Votre mur, <span class="text-accent">votre fresque</span> —
               <span class="relative inline-block">
-                Visualisé
-                <svg class="absolute -bottom-1 left-0 w-full" height="8" viewBox="0 0 200 8" preserveAspectRatio="none" fill="none" aria-hidden="true">
-                  <path d="M0,4 Q33,0 66,4 Q100,8 133,4 Q166,0 200,4" stroke="#FF6B35" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+                visualisé
+                <svg class="absolute -bottom-1 left-0 w-full" height="6" viewBox="0 0 200 6" preserveAspectRatio="none" fill="none" aria-hidden="true">
+                  <path d="M0,3 Q33,0 66,3 Q100,6 133,3 Q166,0 200,3" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
                 </svg>
               </span>
-              <br />avant de commencer.
+              avant de commencer.
             </h1>
 
             <p class="text-text-2 text-lg leading-relaxed mb-8 max-w-lg hero-sub">
-              Uploadez une photo de votre mur, décrivez votre vision, et notre IA génère un aperçu en quelques secondes. Puis nos artistes la réalisent.
+              Uploadez une photo, décrivez votre vision — notre IA génère un aperçu en 2 secondes. Fresques murales, sculptures 3D ou art au sol : nos artistes réalisent ensuite votre projet.
             </p>
 
             <div class="flex flex-wrap gap-3 mb-8 hero-cta">
-              <RouterLink to="/configurateur">
-                <BaseButton size="lg">Visualiser ma fresque →</BaseButton>
-              </RouterLink>
-              <RouterLink to="/portfolio">
-                <BaseButton variant="secondary" size="lg">Voir le portfolio</BaseButton>
+              <div class="hero-cta-glow">
+                <RouterLink to="/configurateur">
+                  <BaseButton size="lg">
+                    <Sparkles class="w-4 h-4" />
+                    Try Blechesm AI
+                  </BaseButton>
+                </RouterLink>
+              </div>
+              <RouterLink to="/contact">
+                <BaseButton variant="secondary" size="lg">Nous contacter</BaseButton>
               </RouterLink>
             </div>
 
@@ -157,9 +159,8 @@
 
     <!-- ── COMMENT ÇA MARCHE ─────────────────────────────────────────── -->
     <section class="relative py-28 overflow-hidden">
-      <div class="spray spray-purple absolute -top-32 -left-32 w-[500px] h-[500px]" />
-      <div class="spray spray-green  absolute -bottom-32 -right-32 w-[400px] h-[400px]" />
-      <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
+      <div class="spray spray-purple absolute -top-16 -left-16 w-[280px] h-[280px]" style="opacity:0.04" />
+      <div class="absolute inset-0 grid-bg opacity-[0.06] pointer-events-none" />
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-16 flex items-end justify-between gap-8" data-reveal>
@@ -214,66 +215,59 @@
       </div>
     </section>
 
-    <!-- ── PORTFOLIO PREVIEW ──────────────────────────────────────────── -->
-    <section class="relative py-24 overflow-hidden">
-      <div class="spray spray-orange absolute top-0 right-0 -translate-y-1/2 w-[400px] h-[400px]" />
+    <!-- ── NOS SERVICES ──────────────────────────────────────────────── -->
+    <section class="relative py-28 overflow-hidden">
+      <div class="spray spray-cyan absolute -top-16 right-0 w-[260px] h-[260px]" style="opacity:0.04" />
+      <div class="absolute inset-0 grid-bg opacity-[0.06] pointer-events-none" />
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10" data-reveal>
+        <div class="mb-14 flex items-end justify-between gap-8" data-reveal>
           <div>
             <div class="flex items-center gap-3 mb-4">
               <span class="w-6 h-px bg-accent" />
-              <span class="text-xs font-mono uppercase tracking-widest text-accent">Nos réalisations</span>
+              <span class="text-xs font-mono uppercase tracking-widest text-accent">Nos services</span>
             </div>
             <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightest leading-[0.95]">
-              Quelques fresques<br /><span class="text-accent">récentes</span>
+              Trois disciplines,<br /><span class="text-accent">un seul artiste</span>
             </h2>
           </div>
-          <RouterLink to="/portfolio" class="shrink-0 mb-1">
-            <BaseButton variant="ghost" size="md">
-              Tout voir
-              <ArrowRight class="w-4 h-4" />
-            </BaseButton>
-          </RouterLink>
+          <svg width="80" height="48" viewBox="0 0 80 48" class="text-warning opacity-45 hidden md:block shrink-0 mb-2" fill="none" aria-hidden="true">
+            <path d="M4,12 C20,4 60,20 72,36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M64,30 L74,38 L64,44" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
 
-        <div class="preview-grid">
-          <div
-            v-for="(item, i) in portfolioPreview"
-            :key="item.id"
-            class="preview-card"
-            :class="i === 0 ? 'preview-card--featured' : ''"
-            :style="{
-              '--pc': tagColor(item.style),
-              '--pc-bg': hexAlpha(tagColor(item.style), 0.14),
-              '--delay': `${i * 0.09}s`,
-            }"
+        <div class="services-grid">
+          <RouterLink
+            v-for="(srv, i) in services"
+            :key="srv.label"
+            :to="srv.to"
+            class="service-card"
+            :style="{ '--sc': srv.color, '--delay': `${i * 0.12}s` }"
             data-reveal
           >
-            <div class="preview-topbar" />
-            <div class="preview-img-wrap">
-              <img :src="item.image" :alt="item.title" class="preview-img" loading="lazy" />
-              <div class="grain-overlay" />
-            </div>
-            <div class="preview-overlay" aria-hidden="true">
-              <div class="preview-overlay-inner">
-                <p class="text-white font-display font-semibold text-base leading-tight">{{ item.title }}</p>
-                <p class="text-white/60 text-xs mt-1">{{ item.city }} · {{ item.size }}</p>
-                <div class="preview-arrow-btn">
-                  <ArrowRight class="w-3.5 h-3.5" />
-                </div>
+            <img :src="srv.image" :alt="srv.title" class="service-img" loading="lazy" />
+            <div class="grain-overlay" />
+            <div class="service-overlay" />
+
+            <div class="service-content">
+              <span
+                class="service-label"
+                :style="{ color: srv.color, borderColor: hexAlpha(srv.color, 0.5), background: hexAlpha(srv.color, 0.15) }"
+              >{{ srv.label }}</span>
+              <h3 class="service-title">{{ srv.title }}</h3>
+              <p class="service-desc">{{ srv.desc }}</p>
+              <ul class="service-features">
+                <li v-for="f in srv.features" :key="f" class="service-feature-item">
+                  <span class="service-feature-dot" :style="{ background: srv.color }" />
+                  {{ f }}
+                </li>
+              </ul>
+              <div class="service-cta">
+                <span class="text-sm font-semibold text-white">Découvrir</span>
+                <ArrowRight class="w-4 h-4 text-white" />
               </div>
             </div>
-          </div>
-
-          <RouterLink to="/portfolio" class="preview-cta-card">
-            <svg width="36" height="36" viewBox="0 0 36 36" class="text-accent mb-3" fill="none" aria-hidden="true">
-              <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
-              <path d="M12,18 Q18,12 24,18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M20,15 L25,18 L20,21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <p class="font-display font-semibold text-text text-sm mb-1">Voir tout<br />le portfolio</p>
-            <p class="text-text-3 text-xs">+{{ portfolioData.length }} réalisations</p>
           </RouterLink>
         </div>
       </div>
@@ -333,10 +327,8 @@
 
     <!-- ── CTA FINAL ──────────────────────────────────────────────────── -->
     <section class="relative py-32 overflow-hidden">
-      <div class="spray spray-green  absolute -top-32 left-1/4   w-[500px] h-[500px]" />
-      <div class="spray spray-orange absolute -bottom-32 right-1/4 w-[500px] h-[500px]" />
-      <div class="spray spray-cyan   absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px]" />
-      <div class="absolute inset-0 grid-bg opacity-25 pointer-events-none" />
+      <div class="spray spray-accent absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[200px]" style="opacity:0.05" />
+      <div class="absolute inset-0 grid-bg opacity-[0.08] pointer-events-none" />
 
       <div class="relative max-w-3xl mx-auto px-4 text-center" data-reveal>
         <svg width="40" height="56" viewBox="0 0 40 56" class="mx-auto mb-10 text-accent opacity-40" fill="none" aria-hidden="true">
@@ -374,7 +366,6 @@ import NavBar from '@/components/layout/NavBar.vue'
 import Footer from '@/components/layout/Footer.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import Pill from '@/components/ui/Pill.vue'
-import { portfolioData } from '@/mocks/data.js'
 import coverImage from '@/assets/blechesm-cover.jpg'
 import logo from '@/assets/logo.png'
 import ooredooUrl        from '@/assets/partners/ooredoo.svg'
@@ -389,7 +380,6 @@ import monoprixUrl       from '@/assets/partners/monoprix.svg'
 import stbUrl            from '@/assets/partners/stb.svg'
 
 const pageEl = ref(null)
-const portfolioPreview = portfolioData.slice(0, 4)
 
 // ── Scroll reveal ────────────────────────────────────────────────
 let observer = null
@@ -420,12 +410,6 @@ function hexAlpha(hex, a) {
   const b = parseInt(h.slice(4, 6), 16)
   return `rgba(${r},${g},${b},${a})`
 }
-
-const TAG_COLORS = {
-  nature: '#4ADE80', abstrait: '#A78BFA', figuratif: '#F472B6',
-  lettrage: '#FB923C', 'sci-fi': '#22D3EE', couleur: '#FBBF24',
-}
-function tagColor(tag) { return TAG_COLORS[tag] ?? '#3D7BFF' }
 
 // ── Data ────────────────────────────────────────────────────────
 const partners = [
@@ -461,6 +445,36 @@ const steps = [
   { icon: Handshake, title: 'Demandez un devis',      desc: 'Nos artistes réalisent la fresque de vos rêves sur place.',              color: '#4ADE80' },
 ]
 
+const services = [
+  {
+    label: 'Dessin Mural',
+    title: 'AI Wall Fresco Customizer',
+    desc: "Uploadez une photo de votre mur — l'IA adapte la fresque à la perspective réelle de votre espace.",
+    image: 'https://images.photowall.com/interiors/64846/standing/wallpaper/room130.jpg?w=1200&q=80&h=1500&poi=1',
+    features: ['Upload & dimensions mur', 'Recadrage / masquage interactif', 'Estimation en temps réel'],
+    color: '#3D7BFF',
+    to: '/configurateur',
+  },
+  {
+    label: 'Sculpture 3D',
+    title: 'Photo to 3D Sculpture AI',
+    desc: 'Transformez vos images de référence en concepts de sculptures stylisées — argile, marbre, métal, néon.',
+    image: 'https://img.freepik.com/premium-photo/3d-render-abstract-minimal-surreal-fashion-concept-funny-contemporary-art-sculpture-colorful-human-model-legs-empty-podium-pedestal-table-product-display-platform_204298-1389.jpg',
+    features: ['Sélecteurs texture & matière', 'Affinage épaisseur & contraste', 'Calcul poids / volume / matériau'],
+    color: '#A78BFA',
+    to: '/contact',
+  },
+  {
+    label: 'Design Sol',
+    title: 'Ground & Floor Visualizer',
+    desc: 'Art au sol haute gamme — décalcomanies géométriques, époxy décoratif, correction de perspective.',
+    image: 'https://leggari.com/wp-content/uploads/2022/06/Upgrade-Your-Basement-Floor-With-An-Epoxy-River.jpg',
+    features: ['Cartographie des bords (edge pinning)', 'Finitions : mat, brillant, métallique', 'Estimation auto surface m²'],
+    color: '#FF6B35',
+    to: '/contact',
+  },
+]
+
 const testimonials = [
   {
     quote: "Blechesm a métamorphosé la façade de notre restaurant en véritable œuvre d'art. La visualisation IA nous a permis de valider le projet avant même le premier coup de bombe.",
@@ -494,6 +508,34 @@ const statBadges = [
 </script>
 
 <style scoped>
+/* ── Hero section — lighter than body for clear separation ──────── */
+.hero-section {
+  background: linear-gradient(180deg, var(--color-surface-1) 0%, var(--color-bg) 85%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Hero CTA glow ──────────────────────────────────────────────── */
+.hero-cta-glow {
+  position: relative;
+  display: inline-block;
+}
+.hero-cta-glow::before {
+  content: '';
+  position: absolute;
+  inset: -6px -10px;
+  background: var(--color-accent);
+  border-radius: 8px;
+  filter: blur(22px);
+  opacity: 0.45;
+  animation: cta-pulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+@keyframes cta-pulse {
+  0%, 100% { opacity: 0.38; transform: scale(1); }
+  50%       { opacity: 0.6;  transform: scale(1.08); }
+}
+
 /* ── Spray blobs ────────────────────────────────────────────────── */
 .spray {
   position: absolute;
@@ -638,106 +680,151 @@ const statBadges = [
 }
 .step-card:hover .step-line { opacity: 1; }
 
-/* ── Portfolio preview grid ─────────────────────────────────────── */
-.preview-grid {
+/* ── Services grid (Artlist.io-inspired) ────────────────────────── */
+.services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 240px;
-  gap: 16px;
+  gap: 20px;
 }
-@media (max-width: 768px) {
-  .preview-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+@media (max-width: 900px) {
+  .services-grid { grid-template-columns: 1fr; }
 }
-@media (max-width: 480px) {
-  .preview-grid { grid-template-columns: 1fr; grid-auto-rows: 220px; }
-}
-.preview-card {
+
+.service-card {
   position: relative;
-  border-radius: 10px;
+  display: block;
+  border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--color-border);
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  min-height: 480px;
+  text-decoration: none;
   cursor: pointer;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
-.preview-card:hover {
-  border-color: var(--pc);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px -8px rgba(0,0,0,0.6);
+.service-card:hover {
+  border-color: var(--sc);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px -12px rgba(0,0,0,0.7), 0 0 0 1px var(--sc, rgba(61,123,255,0.2));
 }
-.preview-card--featured { grid-column: span 2; }
-@media (max-width: 480px) { .preview-card--featured { grid-column: span 1; } }
-.preview-topbar {
-  height: 3px;
-  background: var(--pc);
-  flex-shrink: 0;
-  transition: height 0.2s;
-}
-.preview-card:hover .preview-topbar { height: 5px; }
-.preview-img-wrap {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  background: var(--color-surface-2);
-}
-.preview-img {
+
+.service-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.preview-card:hover .preview-img { transform: scale(1.07); }
-.preview-overlay {
+.service-card:hover .service-img { transform: scale(1.08); }
+
+.service-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(4,6,18,0.9) 0%, transparent 60%);
-  display: flex;
-  align-items: flex-end;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  padding: 16px;
+  background: linear-gradient(
+    to top,
+    rgba(4, 6, 18, 0.97) 0%,
+    rgba(4, 6, 18, 0.75) 40%,
+    rgba(4, 6, 18, 0.35) 70%,
+    rgba(4, 6, 18, 0.1) 100%
+  );
+  transition: background 0.3s ease;
 }
-.preview-card:hover .preview-overlay { opacity: 1; }
-.preview-overlay-inner {
-  width: 100%;
-  transform: translateY(8px);
-  transition: transform 0.3s ease;
+.service-card:hover .service-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(4, 6, 18, 0.98) 0%,
+    rgba(4, 6, 18, 0.82) 45%,
+    rgba(4, 6, 18, 0.45) 75%,
+    rgba(4, 6, 18, 0.15) 100%
+  );
 }
-.preview-card:hover .preview-overlay-inner { transform: translateY(0); }
-.preview-arrow-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1.5px solid var(--pc);
-  background: var(--pc-bg);
-  color: var(--pc);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-  transform: translateX(-8px);
-  opacity: 0;
-  transition: transform 0.3s ease 0.05s, opacity 0.3s ease 0.05s;
-}
-.preview-card:hover .preview-arrow-btn { transform: translateX(0); opacity: 1; }
-.preview-cta-card {
+
+.service-content {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  border-radius: 10px;
-  border: 1.5px dashed var(--color-border-strong);
-  background: var(--color-surface-1);
-  padding: 16px;
-  transition: border-color 0.2s, background 0.2s;
-  text-decoration: none;
+  justify-content: flex-end;
+  padding: 28px 24px;
 }
-.preview-cta-card:hover {
-  border-color: var(--color-accent);
-  background: rgba(61,123,255,0.05);
+
+.service-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+  margin-bottom: 14px;
+  width: fit-content;
+}
+
+.service-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin-bottom: 10px;
+}
+
+.service-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.service-features {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: max-height 0.4s ease, opacity 0.35s ease, transform 0.35s ease;
+}
+.service-card:hover .service-features {
+  max-height: 120px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+}
+
+.service-feature-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.service-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+}
+.service-card:hover .service-cta {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── Testimonials ───────────────────────────────────────────────── */
@@ -780,11 +867,14 @@ const statBadges = [
 
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
+  .hero-cta-glow::before { animation: none; opacity: 0.35; }
   .hero-eyebrow, .hero-title, .hero-sub, .hero-cta, .hero-trust, .hero-image { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .marquee-track { animation: none; }
-  .preview-img, .preview-overlay, .preview-overlay-inner,
-  .preview-arrow-btn, .step-line, .step-ghost-num,
-  .preview-card, .step-card, .testimonial-card { transition: none; }
+  .step-line, .step-ghost-num, .step-card, .testimonial-card { transition: none; }
+  .service-card, .service-img, .service-overlay,
+  .service-features, .service-cta { transition: none; }
+  .service-features { max-height: none; opacity: 1; transform: none; }
+  .service-cta { opacity: 1; transform: none; }
 }
 </style>

@@ -10,13 +10,9 @@
           style="background:#3D7BFF; filter:blur(120px); opacity:0.06;" />
 
         <div class="relative w-full max-w-sm text-center z-10">
-          <!-- Spinner -->
-          <div class="relative w-24 h-24 mx-auto mb-7">
-            <div class="absolute inset-0 rounded-full border-2 border-accent/20" />
-            <div class="absolute inset-0 rounded-full border-2 border-t-accent border-r-transparent border-b-transparent border-l-transparent animate-spin" />
-            <div class="absolute inset-3 rounded-full border border-accent/10 bg-surface-1 flex items-center justify-center">
-              <Sparkles class="w-6 h-6 text-accent animate-pulse" />
-            </div>
+          <!-- Loader -->
+          <div class="mb-7 flex justify-center">
+            <BlechEsmLoader size="96px" />
           </div>
 
           <!-- Sticker -->
@@ -51,10 +47,9 @@
       <div v-else-if="store.generatedImage" key="result">
 
         <!-- ── HERO ──────────────────────────────────────────────────── -->
-        <section class="relative pt-24 pb-20 overflow-hidden">
-          <div class="absolute inset-0 grid-bg opacity-15 pointer-events-none" />
-          <div class="spray spray-blue   absolute -top-24 -right-24 w-[480px] h-[480px]" />
-          <div class="spray spray-purple absolute -bottom-24 -left-24 w-[360px] h-[360px]" />
+        <section class="relative pt-24 pb-20 overflow-hidden hero-section">
+          <div class="absolute inset-0 grid-bg opacity-[0.07] pointer-events-none" />
+          <div class="spray spray-blue absolute -top-12 -right-12 w-[260px] h-[260px]" style="opacity:0.045" />
 
           <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Breadcrumb -->
@@ -313,6 +308,7 @@ import { useRequestStore } from '@/stores/request.js'
 import { generateFresco } from '@/mocks/api.js'
 import NavBar from '@/components/layout/NavBar.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import BlechEsmLoader from '@/components/ui/BlechEsmLoader.vue'
 
 const store = useRequestStore()
 const isLoading = ref(false)
@@ -368,11 +364,17 @@ async function regenerate() {
 </script>
 
 <style scoped>
+/* ── Hero section ───────────────────────────────────────────────── */
+.hero-section {
+  background: linear-gradient(180deg, var(--color-surface-1) 0%, var(--color-bg) 90%);
+  border-bottom: 1px solid var(--color-border);
+}
+
 /* ── Spray blobs ────────────────────────────────────────────────── */
 .spray {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(80px);
   opacity: 0.07;
   pointer-events: none;
 }

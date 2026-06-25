@@ -50,7 +50,7 @@
             <img :src="logo" alt="Blechesm" class="h-10 w-auto" style="filter: drop-shadow(0 0 20px rgba(61,123,255,0.4))" />
           </RouterLink>
           <p class="text-white/50 text-sm leading-relaxed max-w-xs mb-6">
-            Artistes muralistes professionnels basés à Tunis. Nous transformons vos murs en œuvres d'art durables depuis 2016.
+            Plateforme IA de visualisation artistique. Fresques murales, sculptures 3D et art au sol — visualisés par IA, réalisés par nos artistes depuis 2016.
           </p>
           <!-- Socials -->
           <div class="flex gap-2.5">
@@ -129,7 +129,7 @@
         <div class="flex items-center gap-3">
           <!-- Spray tag sticker -->
           <span class="font-mono text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 border border-accent/40 text-accent rounded"
-            style="transform: rotate(-1deg); display: inline-block;">BLECHESM</span>
+            style="transform: rotate(-1deg); display: inline-block;">BLECHESM AI</span>
           <p class="text-white/30 text-xs">© {{ new Date().getFullYear() }} — Tous droits réservés</p>
         </div>
         <div class="flex items-center gap-2">
@@ -151,7 +151,6 @@ import logo from '@/assets/logo.png'
 const navLinks = [
   { to: '/',              label: 'Accueil' },
   { to: '/configurateur', label: 'Configurateur IA' },
-  { to: '/portfolio',     label: 'Portfolio' },
   { to: '/a-propos',      label: 'À propos' },
   { to: '/contact',       label: 'Contact' },
 ]
