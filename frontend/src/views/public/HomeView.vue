@@ -24,7 +24,14 @@
               </svg>
             </div>
 
-            <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tightest leading-[1.05] mb-6 hero-title">
+            <div class="flex items-start gap-4 mb-6 hero-title">
+              <img
+                :src="logo"
+                alt="Blechesm"
+                class="h-16 sm:h-20 lg:h-24 w-auto object-contain flex-shrink-0 mt-1"
+                style="filter: drop-shadow(0 0 24px rgba(61,123,255,0.45)) drop-shadow(0 0 60px rgba(61,123,255,0.15))"
+              />
+            <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tightest leading-[1.05]">
               Votre <span class="hero-word-slot"><Transition name="word-flip" mode="out-in"><span :key="heroWord" class="text-accent">{{ heroWord }}</span></Transition></span>,
               
               <br class="hidden sm:block" />
@@ -36,6 +43,7 @@
               </span>
               avant de commencer.
             </h1>
+            </div>
 
             <p class="text-text-2 text-lg leading-relaxed mb-8 max-w-lg hero-sub">
               Uploadez une photo, décrivez votre vision — notre IA génère un aperçu en 2 secondes.
@@ -66,38 +74,56 @@
             </div>
           </div>
 
-          <!-- Right: logo + image -->
+          <!-- Right: image -->
           <div class="hero-image">
-            <div class="flex items-center justify-center lg:justify-start mb-6">
-              <img
-                :src="logo"
-                alt="Blechesm"
-                class="h-20 sm:h-24 lg:h-28 w-auto object-contain"
-                style="filter: drop-shadow(0 0 40px rgba(61,123,255,0.35)) drop-shadow(0 0 80px rgba(61,123,255,0.12))"
-              />
-            </div>
-
             <div class="relative">
-              <div class="absolute -top-2.5 -left-2.5 w-full h-full rounded-xl border-2 border-warning/35 pointer-events-none z-0" />
-              <div class="absolute -top-5 -left-5 w-full h-full rounded-xl border border-accent/15 pointer-events-none z-0" />
+              <!-- Ambient pulse rings -->
+              <div class="hero-img-ring hero-img-ring-1" />
+              <div class="hero-img-ring hero-img-ring-2" />
 
-              <div class="relative aspect-[4/3] rounded-xl overflow-hidden border border-border-strong shadow-2xl shadow-black/70 z-10">
+              <!-- Main image: AI terminal -->
+              <div class="relative aspect-[4/3] rounded-xl overflow-hidden border border-border-strong z-10 hero-img-card">
                 <img :src="coverImage" alt="Exemple de fresque murale Blechesm" class="w-full h-full object-cover" />
                 <div class="grain-overlay" />
-                <div class="absolute inset-0 bg-gradient-to-tr from-accent/5 via-transparent to-warning/5 pointer-events-none" />
+                <!-- Color grade -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-accent/6 via-transparent to-warning/6 pointer-events-none" />
+                <!-- Scanline texture + sweep -->
+                <div class="hero-scanline" />
+                <!-- Corner targeting brackets -->
+                <div class="hero-corner hero-corner-tl" />
+                <div class="hero-corner hero-corner-tr" />
+                <div class="hero-corner hero-corner-bl" />
+                <div class="hero-corner hero-corner-br" />
+                <!-- AI status bar at bottom of image -->
+                <div class="hero-img-status">
+                  <span class="hero-status-dot" />
+                  <span class="hero-status-label">IA — Aperçu en cours</span>
+                  <span class="hero-status-bar"><span class="hero-status-bar-fill" /></span>
+                </div>
               </div>
 
-              <div class="absolute -bottom-4 -left-4 z-20 bg-surface-1 border border-border rounded-lg px-4 py-3 shadow-2xl">
-                <p class="text-text-3 text-xs uppercase tracking-widest mb-0.5 font-mono">Généré en</p>
-                <p class="font-display font-semibold text-text">2.5 secondes</p>
+              <!-- Badge: generation speed -->
+              <div class="absolute -bottom-5 -left-5 z-20 hero-badge-speed">
+                <div class="hero-badge-speed-icon">
+                  <Zap class="w-3.5 h-3.5 text-warning" />
+                </div>
+                <div>
+                  <p class="hero-badge-speed-label">Généré en</p>
+                  <p class="hero-badge-speed-value">2.5 secondes</p>
+                </div>
               </div>
 
-              <div class="absolute -top-4 -right-4 z-20 bg-accent rounded-lg px-4 py-3 shadow-2xl">
-                <p class="text-white text-xs font-semibold">+200 fresques réalisées</p>
+              <!-- Badge: social proof -->
+              <!-- Social proof sticker — mirrors IA tag, opposite corner -->
+              <div class="absolute top-3 right-3 z-20 hero-proof-sticker">
+                +200 réalisées
               </div>
 
-              <div class="absolute top-3 left-3 z-20 px-2 py-1 border-2 border-warning text-warning font-mono text-xs font-bold uppercase rounded tracking-widest"
-                style="background: rgba(0,0,0,0.5); transform: rotate(-3deg);">IA</div>
+              <!-- IA live sticker -->
+              <div class="absolute top-3 left-3 z-20 hero-ia-sticker">
+                <span class="hero-ia-live" />
+                IA
+              </div>
             </div>
           </div>
         </div>
@@ -450,7 +476,7 @@ import NavBar from '@/components/layout/NavBar.vue'
 import Footer from '@/components/layout/Footer.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import Pill from '@/components/ui/Pill.vue'
-import coverImage from '@/assets/blechesm-cover.jpg'
+import coverImage from '@/assets/BE-work-1.jpg'
 import logo from '@/assets/logo.png'
 import ooredooUrl        from '@/assets/partners/ooredoo.svg'
 import tunisieTelecomUrl from '@/assets/partners/tunisie-telecom.svg'
@@ -1136,6 +1162,228 @@ const statBadges = [
 }
 .word-flip-enter-from { opacity: 0; transform: translateY(12px); }
 .word-flip-leave-to   { opacity: 0; transform: translateY(-12px); }
+
+/* ── Hero image: AI terminal ────────────────────────────────────── */
+
+/* Ambient pulse rings */
+.hero-img-ring {
+  position: absolute;
+  border-radius: 18px;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-img-ring-1 {
+  inset: -10px;
+  border: 1px solid rgba(61, 123, 255, 0.14);
+  animation: hero-ring-pulse 3.5s ease-in-out infinite;
+}
+.hero-img-ring-2 {
+  inset: -22px;
+  border: 1px solid rgba(255, 107, 53, 0.07);
+  animation: hero-ring-pulse 3.5s ease-in-out infinite 1.2s;
+}
+@keyframes hero-ring-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+/* Image card */
+.hero-img-card {
+  box-shadow:
+    0 0 0 1px rgba(61, 123, 255, 0.12),
+    0 40px 80px rgba(0, 0, 0, 0.9),
+    0 0 80px rgba(61, 123, 255, 0.06);
+}
+
+/* Scanline: CRT texture + blue sweep */
+.hero-scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.07) 3px,
+    rgba(0, 0, 0, 0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+.hero-scanline::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(61, 123, 255, 0.1),
+    transparent
+  );
+  animation: scanline-sweep 5s linear infinite;
+  pointer-events: none;
+}
+@keyframes scanline-sweep {
+  0%   { top: -80px; }
+  100% { top: 110%; }
+}
+
+/* Corner targeting brackets */
+.hero-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  z-index: 4;
+  pointer-events: none;
+}
+.hero-corner-tl { top: 12px; left: 12px; border-top: 1.5px solid #3D7BFF; border-left: 1.5px solid #3D7BFF; }
+.hero-corner-tr { top: 12px; right: 12px; border-top: 1.5px solid #3D7BFF; border-right: 1.5px solid #3D7BFF; }
+.hero-corner-bl { bottom: 34px; left: 12px; border-bottom: 1.5px solid #3D7BFF; border-left: 1.5px solid #3D7BFF; }
+.hero-corner-br { bottom: 34px; right: 12px; border-bottom: 1.5px solid #3D7BFF; border-right: 1.5px solid #3D7BFF; }
+
+/* AI status bar inside image */
+.hero-img-status {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, transparent 100%);
+}
+.hero-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ADE80;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.9);
+  flex-shrink: 0;
+  animation: status-blink 1.6s ease-in-out infinite;
+}
+@keyframes status-blink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(74,222,128,0.9); }
+  50%       { opacity: 0.3; box-shadow: none; }
+}
+.hero-status-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  flex: 1;
+}
+.hero-status-bar {
+  width: 56px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-status-bar-fill {
+  display: block;
+  height: 100%;
+  width: 40px;
+  background: linear-gradient(to right, transparent, #3D7BFF, transparent);
+  animation: bar-scan 2.2s ease-in-out infinite;
+}
+@keyframes bar-scan {
+  0%   { transform: translateX(-40px); }
+  100% { transform: translateX(56px); }
+}
+
+/* Speed badge */
+.hero-badge-speed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(8, 9, 13, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-top-color: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  backdrop-filter: blur(12px);
+}
+.hero-badge-speed-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: rgba(246, 184, 78, 0.1);
+  border: 1px solid rgba(246, 184, 78, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.hero-badge-speed-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-3);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.hero-badge-speed-value {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+/* Social proof sticker — mirrors IA tag */
+.hero-proof-sticker {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border: 2px solid #3D7BFF;
+  color: #3D7BFF;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.65);
+  transform: rotate(3deg);
+}
+
+/* IA live sticker */
+.hero-ia-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 2px solid #F6B84E;
+  color: #F6B84E;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.65);
+  transform: rotate(-3deg);
+}
+.hero-ia-live {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #4ADE80;
+  box-shadow: 0 0 6px rgba(74, 222, 128, 0.9);
+  animation: status-blink 1.6s ease-in-out infinite 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-img-ring-1, .hero-img-ring-2 { animation: none; opacity: 0.5; }
+  .hero-scanline::after { animation: none; }
+  .hero-status-dot, .hero-ia-live { animation: none; }
+  .hero-status-bar-fill { animation: none; }
+}
 
 /* ── Hero eyebrow tag — spray stencil ──────────────────────────── */
 .hero-tag {
