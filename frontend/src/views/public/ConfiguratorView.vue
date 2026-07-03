@@ -618,7 +618,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import {
   ChevronRight, Check, CheckCircle2, Circle,
   Sparkles, Lightbulb, ImageIcon, Eye, FileText,
@@ -633,6 +633,7 @@ import FileDropzone from '@/components/ui/FileDropzone.vue'
 
 const store = useRequestStore()
 const router = useRouter()
+const route = useRoute()
 const loading = ref(false)
 const errors = reactive({ wall: '', description: '' })
 const thickness = ref(60)
@@ -884,8 +885,21 @@ async function sendMessage(suggestion) {
   scrollChat()
 }
 
-onMounted(initChat)
+onMounted(() => {
+  const validServices = ['mural', 'sculpture', 'sol']
+  const requested = route.query.service
+  if (requested && validServices.includes(requested)) {
+    store.serviceType = requested
+  }
+  initChat()
+})
 watch(() => store.serviceType, initChat)
+watch(() => route.query.service, (newService) => {
+  const validServices = ['mural', 'sculpture', 'sol']
+  if (newService && validServices.includes(newService)) {
+    store.serviceType = newService
+  }
+})
 
 // ── Form submit ────────────────────────────────────────────────────
 async function handleGenerate() {

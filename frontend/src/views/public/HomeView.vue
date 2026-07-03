@@ -32,7 +32,7 @@
             </h1>
 
             <p class="text-text-2 text-lg leading-relaxed mb-8 max-w-lg hero-sub">
-              Uploadez une photo, décrivez votre vision — notre IA génère un aperçu en 2 secondes. Fresques murales, sculptures 3D ou art au sol : nos artistes réalisent ensuite votre projet.
+              Uploadez une photo, décrivez votre vision — notre IA génère un aperçu en 2 secondes.
             </p>
 
             <div class="flex flex-wrap gap-3 mb-8 hero-cta">
@@ -95,6 +95,82 @@
         </div>
       </div>
 
+    </section>
+
+    <!-- ── BLECHESM AI TOOLKIT ────────────────────────────────────────── -->
+    <section class="relative py-28 overflow-hidden">
+      <div class="spray spray-accent absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[200px]" style="opacity:0.045" />
+      <div class="absolute inset-0 grid-bg opacity-[0.06] pointer-events-none" />
+
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Header -->
+        <div class="mb-14 text-center" data-reveal>
+          <div class="flex items-center justify-center gap-3 mb-5">
+            <span class="w-6 h-px bg-accent" />
+            <span class="text-xs font-mono uppercase tracking-widest text-accent">Nos outils IA</span>
+            <span class="w-6 h-px bg-accent" />
+          </div>
+          <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightest leading-[0.95] mb-4">
+            BlechEsm <span class="text-accent">AI Toolkit</span>
+          </h2>
+          <p class="text-text-2 text-base max-w-md mx-auto">
+            Visualisez votre projet avant de vous lancer — gratuitement, en 2 secondes.
+          </p>
+          <div class="mt-8">
+            <RouterLink to="/configurateur">
+              <BaseButton size="md">
+                <Sparkles class="w-4 h-4" />
+                Accéder au Toolkit
+              </BaseButton>
+            </RouterLink>
+          </div>
+        </div>
+
+        <!-- 4 glass cards -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div
+            v-for="(tool, i) in aiTools"
+            :key="tool.id"
+            class="ai-tool-card"
+            :class="{ 'ai-tool-card--disabled': tool.comingSoon }"
+            :style="{ '--tc': tool.color, '--delay': `${i * 0.1}s` }"
+            data-reveal
+          >
+            <!-- Logo + badge row -->
+            <div class="flex items-center justify-between mb-5">
+              <img :src="logo" alt="Blechesm" class="h-7 w-auto object-contain"
+                style="filter: drop-shadow(0 0 8px rgba(61,123,255,0.4))" />
+              <span v-if="tool.comingSoon" class="coming-soon-badge">Bientôt</span>
+              <span v-else class="text-[10px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 rounded"
+                :style="{ color: tool.color, background: hexAlpha(tool.color, 0.12), border: `1px solid ${hexAlpha(tool.color, 0.3)}` }">IA</span>
+            </div>
+
+            <!-- Name -->
+            <h3 class="font-display font-semibold text-text text-base leading-tight mb-2">{{ tool.name }}</h3>
+
+            <!-- Desc -->
+            <p class="text-text-3 text-xs leading-relaxed flex-1 mb-5">{{ tool.desc }}</p>
+
+            <!-- Bottom accent line -->
+            <div class="ai-tool-line" />
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2 mt-5">
+              <RouterLink to="/contact" class="flex-1">
+                <BaseButton variant="ghost" size="sm" class="w-full">En savoir +</BaseButton>
+              </RouterLink>
+              <RouterLink v-if="!tool.comingSoon" :to="tool.href" class="flex-1">
+                <BaseButton size="sm" class="w-full">Essayer →</BaseButton>
+              </RouterLink>
+              <div v-else class="flex-1">
+                <BaseButton size="sm" class="w-full opacity-40" disabled>Essayer →</BaseButton>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <!-- ── TRUST BAND ─────────────────────────────────────────────────── -->
@@ -439,10 +515,10 @@ const trustStats = [
 ]
 
 const steps = [
-  { icon: Camera,    title: 'Uploadez votre mur',     desc: 'Prenez une photo de votre mur et importez-la dans notre configurateur.', color: '#FB923C' },
-  { icon: PenLine,   title: 'Décrivez votre vision',  desc: 'Style, couleurs, références — guidez notre IA avec vos idées.',          color: '#F472B6' },
-  { icon: Sparkles,  title: 'Visualisez le résultat', desc: 'Notre IA génère un aperçu réaliste de la fresque sur votre mur.',        color: '#3D7BFF' },
-  { icon: Handshake, title: 'Demandez un devis',      desc: 'Nos artistes réalisent la fresque de vos rêves sur place.',              color: '#4ADE80' },
+  { icon: Camera,    title: 'Uploadez votre mur',     desc: 'Photo du mur dans le configurateur.',          color: '#FB923C' },
+  { icon: PenLine,   title: 'Décrivez votre vision',  desc: 'Style, couleurs, références — guidez l\'IA.',  color: '#F472B6' },
+  { icon: Sparkles,  title: 'Visualisez le résultat', desc: 'Aperçu réaliste généré en 2 secondes.',        color: '#3D7BFF' },
+  { icon: Handshake, title: 'Demandez un devis',      desc: 'Nos artistes réalisent votre projet sur site.', color: '#4ADE80' },
 ]
 
 const services = [
@@ -472,6 +548,41 @@ const services = [
     features: ['Cartographie des bords (edge pinning)', 'Finitions : mat, brillant, métallique', 'Estimation auto surface m²'],
     color: '#FF6B35',
     to: '/contact',
+  },
+]
+
+const aiTools = [
+  {
+    id: 'mural',
+    name: 'BlechEsm AI Fresque Murale',
+    desc: 'Visualisez votre fresque sur votre propre mur avant le premier coup de bombe.',
+    color: '#3D7BFF',
+    href: '/configurateur?service=mural',
+    comingSoon: false,
+  },
+  {
+    id: 'sculpture',
+    name: 'BlechEsm AI Sculpture 3D',
+    desc: 'Transformez une image de référence en concept sculpture — argile, marbre, métal.',
+    color: '#A78BFA',
+    href: '/configurateur?service=sculpture',
+    comingSoon: false,
+  },
+  {
+    id: 'sol',
+    name: 'BlechEsm AI Design Sol',
+    desc: 'Art au sol époxy haute gamme avec correction de perspective automatique.',
+    color: '#FF6B35',
+    href: '/configurateur?service=sol',
+    comingSoon: false,
+  },
+  {
+    id: 'logos',
+    name: 'BlechEsm AI Logos',
+    desc: 'Générez des identités visuelles street-art uniques adaptées à votre marque.',
+    color: '#4ADE80',
+    href: null,
+    comingSoon: true,
   },
 ]
 
@@ -865,6 +976,50 @@ const statBadges = [
   to   { opacity: 1; transform: translateX(0) scale(1); }
 }
 
+/* ── AI Toolkit cards ───────────────────────────────────────────── */
+.ai-tool-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(13, 16, 24, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 12px;
+  padding: 24px 20px 20px;
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+.ai-tool-card:hover:not(.ai-tool-card--disabled) {
+  border-color: var(--tc);
+  box-shadow: 0 0 0 1px var(--tc), 0 20px 40px rgba(61,123,255,0.15);
+  transform: translateY(-4px);
+}
+.ai-tool-card--disabled { opacity: 0.6; }
+
+.ai-tool-line {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(to right, var(--tc), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.ai-tool-card:hover:not(.ai-tool-card--disabled) .ai-tool-line { opacity: 1; }
+
+.coming-soon-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: #F6B84E;
+  background: rgba(246,184,78,0.1);
+  border: 1px solid rgba(246,184,78,0.3);
+}
+
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .hero-cta-glow::before { animation: none; opacity: 0.35; }
@@ -876,5 +1031,6 @@ const statBadges = [
   .service-features, .service-cta { transition: none; }
   .service-features { max-height: none; opacity: 1; transform: none; }
   .service-cta { opacity: 1; transform: none; }
+  .ai-tool-card, .ai-tool-line { transition: none; }
 }
 </style>
