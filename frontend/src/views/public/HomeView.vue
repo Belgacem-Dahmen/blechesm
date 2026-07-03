@@ -416,18 +416,35 @@
 
           <div class="statement-card sm:col-span-2 lg:col-span-1" data-reveal style="--delay: 0.25s">
             <div class="spray spray-accent absolute inset-0 rounded-xl opacity-[0.08]" style="filter:blur(40px)" />
-            <div class="relative z-10 h-full flex flex-col justify-between">
-              <div>
-                <p class="font-mono text-xs uppercase tracking-widest text-accent mb-4">Notre engagement</p>
-                <p class="font-display text-2xl font-semibold tracking-tight text-text leading-tight">
-                  Chaque fresque est une signature durable sur votre espace.
-                </p>
+            <!-- Wall crosshatch texture -->
+            <div class="stmt-crosshatch" />
+            <!-- Ghost quote mark -->
+            <span class="stmt-bg-quote" aria-hidden="true">"</span>
+            <!-- Top accent line -->
+            <div class="stmt-top-bar" />
+
+            <div class="relative z-10 h-full flex flex-col">
+              <!-- Eyebrow -->
+              <div class="flex items-center gap-2 mb-5">
+                <span class="stmt-eyebrow-line" />
+                <p class="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">Notre engagement</p>
               </div>
-              <div class="mt-8 flex flex-wrap gap-2">
-                <span v-for="badge in statBadges" :key="badge.label"
-                  class="text-xs px-3 py-1.5 rounded-pill font-semibold border"
-                  :style="{ color: badge.color, borderColor: hexAlpha(badge.color, 0.4), background: hexAlpha(badge.color, 0.1) }"
-                >{{ badge.label }}</span>
+
+              <!-- Quote -->
+              <p class="font-display text-xl font-semibold tracking-tight text-text leading-snug mb-auto">
+                Chaque fresque est une<br /><span class="text-accent">signature durable</span> sur votre espace.
+              </p>
+
+              <!-- Stats: spray stroke rows -->
+              <div class="mt-8 flex flex-col gap-3">
+                <div v-for="badge in statBadges" :key="badge.label"
+                  class="stmt-stat-row"
+                  :style="{ '--sc': badge.color }"
+                >
+                  <span class="stmt-stat-bullet" />
+                  <span class="stmt-stat-name">{{ badge.label }}</span>
+                  <span class="stmt-stat-streak" />
+                </div>
               </div>
             </div>
           </div>
@@ -1070,12 +1087,100 @@ const statBadges = [
   position: relative;
   overflow: hidden;
   background: var(--color-surface-1);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
   border-radius: 12px;
   padding: 28px;
-  min-height: 200px;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 20px 48px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.03) inset;
+}
+
+/* Diagonal crosshatch — wall texture */
+.stmt-crosshatch {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.018) 0px,
+      rgba(255,255,255,0.018) 1px,
+      transparent 1px,
+      transparent 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+/* Ghost decorative quote mark */
+.stmt-bg-quote {
+  position: absolute;
+  top: -32px;
+  right: 8px;
+  font-family: var(--font-display);
+  font-size: 200px;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(61, 123, 255, 0.05);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* Top gradient accent bar */
+.stmt-top-bar {
+  position: absolute;
+  top: 0; left: 18%; right: 18%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-accent), transparent);
+  opacity: 0.55;
+}
+
+/* Eyebrow rule */
+.stmt-eyebrow-line {
+  display: inline-block;
+  width: 14px;
+  height: 1px;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+
+/* Spray-stroke stat rows */
+.stmt-stat-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.stmt-stat-bullet {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--sc);
+  box-shadow: 0 0 7px var(--sc);
+  flex-shrink: 0;
+}
+.stmt-stat-name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sc);
+  flex-shrink: 0;
+}
+.stmt-stat-streak {
+  flex: 1;
+  height: 1px;
+  background: var(--sc);
+  opacity: 0.2;
+  border-radius: 1px;
 }
 
 /* ── Keyframes ──────────────────────────────────────────────────── */
