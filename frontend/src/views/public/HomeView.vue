@@ -37,12 +37,14 @@
 
             <div class="flex flex-wrap gap-3 mb-8 hero-cta">
               <div class="hero-cta-glow">
-                <RouterLink to="/configurateur">
-                  <BaseButton size="lg">
-                    <Sparkles class="w-4 h-4" />
-                    Try Blechesm AI
-                  </BaseButton>
-                </RouterLink>
+                <div class="hero-cta-border">
+                  <RouterLink to="/configurateur">
+                    <BaseButton size="lg">
+                      <Sparkles class="w-4 h-4" />
+                      Try Blechesm AI
+                    </BaseButton>
+                  </RouterLink>
+                </div>
               </div>
               <RouterLink to="/contact">
                 <BaseButton variant="secondary" size="lg">Nous contacter</BaseButton>
@@ -625,7 +627,7 @@ const statBadges = [
   border-bottom: 1px solid var(--color-border);
 }
 
-/* ── Hero CTA glow ──────────────────────────────────────────────── */
+/* ── Hero CTA ambient glow — dual-color pulse ───────────────────── */
 .hero-cta-glow {
   position: relative;
   display: inline-block;
@@ -633,18 +635,84 @@ const statBadges = [
 .hero-cta-glow::before {
   content: '';
   position: absolute;
-  inset: -6px -10px;
-  background: var(--color-accent);
-  border-radius: 8px;
-  filter: blur(22px);
-  opacity: 0.45;
+  inset: -12px -16px;
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse 55% 80% at 25% 50%, var(--color-accent)     0%, transparent 70%),
+    radial-gradient(ellipse 55% 80% at 75% 50%, var(--color-accent-warm) 0%, transparent 70%);
+  filter: blur(18px);
+  opacity: 0.55;
   animation: cta-pulse 2.4s ease-in-out infinite;
   pointer-events: none;
   z-index: -1;
 }
 @keyframes cta-pulse {
-  0%, 100% { opacity: 0.38; transform: scale(1); }
-  50%       { opacity: 0.6;  transform: scale(1.08); }
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%       { opacity: 0.75; transform: scale(1.1); }
+}
+
+/* ── Border beam — masked to edge only ──────────────────────────── */
+/*   The mask technique cuts out the center so the gradient shows    */
+/*   only in the 2px border strip, never inside the button.          */
+.hero-cta-border {
+  position: relative;
+  display: inline-block;
+  border-radius: 6px;
+}
+.hero-cta-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;            /* sit just outside the button */
+  padding: 2px;           /* border thickness */
+  border-radius: 8px;
+  background: conic-gradient(
+    from 0deg,
+    transparent           0deg,
+    rgba(255,255,255,0.9) 8deg,
+    var(--color-accent)   34deg,
+    var(--color-accent-warm) 70deg,
+    transparent           95deg,
+    transparent           360deg
+  );
+  animation: border-spin 1.8s linear infinite;
+  /* Show gradient only in the padding (border) area, mask center out */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.hero-cta-border > * {
+  position: relative;
+  z-index: 1;
+}
+@keyframes border-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Button face: shimmer sweep ─────────────────────────────────── */
+.hero-cta-border :deep(.btn--primary) {
+  border-color: transparent;
+  overflow: hidden;
+}
+.hero-cta-border :deep(.btn--primary)::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0; left: -80%;
+  width: 55%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255,255,255,0.22) 50%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  animation: btn-shine 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btn-shine {
+  0%        { left: -80%; }
+  35%, 100% { left: 135%; }
 }
 
 /* ── Spray blobs ────────────────────────────────────────────────── */
@@ -1023,6 +1091,9 @@ const statBadges = [
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .hero-cta-glow::before { animation: none; opacity: 0.35; }
+  .hero-cta-border::before,
+  .hero-cta-border::after { animation: none; }
+  .hero-cta-border :deep(.btn--primary)::after { animation: none; }
   .hero-eyebrow, .hero-title, .hero-sub, .hero-cta, .hero-trust, .hero-image { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .marquee-track { animation: none; }
