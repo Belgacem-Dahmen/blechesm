@@ -13,7 +13,11 @@
           <!-- Left: text -->
           <div>
             <div class="flex items-center gap-3 mb-6 hero-eyebrow">
-              <Pill warm>Blechesm AI — Visualisation &amp; Art Urbain</Pill>
+              <div class="hero-tag">
+                <span class="hero-tag-brand">BLECHESM AI</span>
+                <span class="hero-tag-divider" aria-hidden="true" />
+                <span class="hero-tag-sub">Visualisation &amp; Art Urbain</span>
+              </div>
               <svg width="48" height="22" viewBox="0 0 48 22" class="text-warning opacity-60 hidden sm:block" fill="none" aria-hidden="true">
                 <path d="M3,11 C11,4 28,4 40,11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 <path d="M34,6 L41,12 L33,16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1132,4 +1136,73 @@ const statBadges = [
 }
 .word-flip-enter-from { opacity: 0; transform: translateY(12px); }
 .word-flip-leave-to   { opacity: 0; transform: translateY(-12px); }
+
+/* ── Hero eyebrow tag — spray stencil ──────────────────────────── */
+.hero-tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 10px;
+  background: rgba(8, 9, 13, 0.92);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-left: 2.5px solid #FF6B35;
+  border-radius: 3px;
+  transform: rotate(-0.8deg);
+  isolation: isolate;
+  backdrop-filter: blur(6px);
+}
+/* Spray halo behind the tag */
+.hero-tag::before {
+  content: '';
+  position: absolute;
+  inset: -6px -10px;
+  background:
+    radial-gradient(ellipse 55% 70% at 18% 50%, rgba(255, 107, 53, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 65% at 82% 50%, rgba(61, 123, 255, 0.08) 0%, transparent 65%);
+  filter: blur(10px);
+  z-index: -1;
+  animation: tag-spray-breathe 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+/* Subtle grain on the tag face */
+.hero-tag::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  border-radius: 2px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+@keyframes tag-spray-breathe {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 0.8; transform: scale(1.05); }
+}
+.hero-tag-brand {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #3D7BFF;
+  text-shadow: 0 0 10px rgba(61, 123, 255, 0.8), 0 0 24px rgba(61, 123, 255, 0.35);
+}
+.hero-tag-divider {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: linear-gradient(to bottom, transparent, rgba(255,107,53,0.5), transparent);
+  flex-shrink: 0;
+}
+.hero-tag-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: rgba(255, 107, 53, 0.7);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-tag::before { animation: none; opacity: 0.5; }
+}
 </style>
