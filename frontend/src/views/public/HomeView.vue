@@ -384,33 +384,61 @@
     </section>
 
     <!-- ── SOCIAL PROOF ───────────────────────────────────────────────── -->
-    <section class="relative py-20 overflow-hidden border-y border-border">
-      <div class="absolute inset-0 bg-surface-1/30 pointer-events-none" />
-      <div class="absolute inset-0 grid-bg opacity-8 pointer-events-none" />
+    <section class="relative py-28 overflow-hidden">
+      <div class="absolute inset-0 bg-surface-1/20 pointer-events-none" />
+      <div class="absolute inset-0 grid-bg opacity-[0.05] pointer-events-none" />
+      <div class="spray spray-accent absolute top-1/2 left-1/3 -translate-y-1/2 w-[600px] h-[300px]" style="opacity:0.035" />
+      <div class="absolute top-0 inset-x-0 h-px" style="background: linear-gradient(to right, transparent, var(--border-strong), transparent)" />
+      <div class="absolute bottom-0 inset-x-0 h-px" style="background: linear-gradient(to right, transparent, var(--border-strong), transparent)" />
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Section header -->
+        <div class="mb-14 text-center" data-reveal>
+          <div class="flex items-center gap-4 mb-5">
+            <div class="flex-1 h-px" style="background: linear-gradient(to right, transparent, var(--border-strong))" />
+            <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-accent">Ils nous font confiance</span>
+            <div class="flex-1 h-px" style="background: linear-gradient(to left, transparent, var(--border-strong))" />
+          </div>
+          <h2 class="font-display text-3xl sm:text-4xl font-semibold tracking-tightest">
+            Ce qu'ils <span class="text-accent">disent</span>
+          </h2>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <div
             v-for="(t, i) in testimonials"
             :key="t.name"
             class="testimonial-card"
-            :style="{ '--tc': t.color, '--delay': `${i * 0.1}s` }"
+            :style="{ '--tc': t.color, '--delay': `${i * 0.12}s` }"
             data-reveal
           >
-            <div class="flex items-center gap-1 mb-4">
-              <span v-for="n in 5" :key="n" class="text-warning text-sm">★</span>
+            <!-- Ghost quote mark -->
+            <span class="tcard-bg-quote" aria-hidden="true">"</span>
+            <!-- Hover accent bar -->
+            <div class="tcard-accent-bar" />
+
+            <!-- Stars + rating -->
+            <div class="flex items-center gap-1 mb-5 relative z-10">
+              <span v-for="n in 5" :key="n" class="tcard-star">★</span>
+              <span class="font-mono text-[9px] font-bold text-warning/60 ml-1.5">5.0</span>
             </div>
-            <blockquote class="text-text-2 text-sm leading-relaxed mb-5 flex-1">
-              "{{ t.quote }}"
+
+            <!-- Quote -->
+            <blockquote class="tcard-quote flex-1 relative z-10">
+              {{ t.quote }}
             </blockquote>
-            <div class="flex items-center gap-3 pt-4 border-t border-border">
-              <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-                :style="{ background: hexAlpha(t.color, 0.2), color: t.color }"
+
+            <!-- Author -->
+            <div class="tcard-author relative z-10">
+              <div class="tcard-avatar"
+                :style="{ background: hexAlpha(t.color, 0.12), color: t.color, border: `1px solid ${hexAlpha(t.color, 0.3)}` }"
               >{{ t.initials }}</div>
-              <div>
-                <p class="text-text font-semibold text-sm">{{ t.name }}</p>
-                <p class="text-text-3 text-xs">{{ t.role }}</p>
+              <div class="flex-1 min-w-0">
+                <p class="tcard-name">{{ t.name }}</p>
+                <p class="tcard-role">{{ t.role }}</p>
               </div>
+              <div class="tcard-verified" aria-label="Client vérifié">✓</div>
             </div>
           </div>
 
@@ -1072,16 +1100,127 @@ const statBadges = [
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--color-surface-1);
+  background: rgba(13, 16, 24, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--color-border);
-  border-top: 3px solid var(--tc);
-  border-radius: 12px;
-  padding: 24px;
-  transition: border-color 0.25s, transform 0.25s;
+  border-radius: 14px;
+  padding: 28px 24px 22px;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 .testimonial-card:hover {
   border-color: var(--tc);
-  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px var(--tc), 0 28px 56px rgba(0,0,0,0.55);
+  transform: translateY(-5px);
+}
+
+/* Ghost oversized quote mark */
+.tcard-bg-quote {
+  position: absolute;
+  top: -20px;
+  right: 14px;
+  font-family: var(--font-display);
+  font-size: 130px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--tc);
+  opacity: 0.055;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.testimonial-card:hover .tcard-bg-quote {
+  opacity: 0.1;
+  transform: rotate(6deg) scale(1.06);
+}
+
+/* Accent bar that appears on hover */
+.tcard-accent-bar {
+  position: absolute;
+  top: 0; left: 15%; right: 15%;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--tc), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.testimonial-card:hover .tcard-accent-bar { opacity: 1; }
+
+/* Stars */
+.tcard-star {
+  color: var(--color-warning);
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Quote text */
+.tcard-quote {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--color-text-2);
+  margin-bottom: 20px;
+}
+
+/* Author row */
+.tcard-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: auto;
+}
+
+/* Avatar: sharp sticker style */
+.tcard-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  transform: rotate(-2deg);
+}
+.tcard-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tcard-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-3);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* Verified badge */
+.tcard-verified {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-success);
+  flex-shrink: 0;
+  margin-left: auto;
 }
 .statement-card {
   position: relative;
@@ -1246,7 +1385,8 @@ const statBadges = [
   .hero-eyebrow, .hero-title, .hero-sub, .hero-cta, .hero-trust, .hero-image { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .marquee-track { animation: none; }
-  .step-line, .step-ghost-num, .step-card, .testimonial-card { transition: none; }
+  .step-line, .step-ghost-num, .step-card { transition: none; }
+  .testimonial-card, .tcard-bg-quote, .tcard-accent-bar { transition: none; }
   .service-card, .service-img, .service-overlay,
   .service-features, .service-cta { transition: none; }
   .service-features { max-height: none; opacity: 1; transform: none; }

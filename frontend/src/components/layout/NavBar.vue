@@ -45,7 +45,7 @@
             Gratuit →
           </span>
           <RouterLink to="/configurateur" class="nav-cta">
-            Visualiser ma fresque
+            Try BlechEsm AI
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M2,7 H12 M8,3 L12,7 L8,11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -105,7 +105,7 @@
             class="mobile-cta"
             @click="mobileOpen = false"
           >
-            Visualiser ma fresque
+            Try BlechEsm AI
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
               <path d="M2,7 H12 M8,3 L12,7 L8,11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -234,28 +234,29 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   to   { opacity: 1; transform: rotate(-2deg) scaleX(1.05) scaleY(1); }
 }
 
-/* ── CTA button ─────────────────────────────────────────────────── */
+/* ── CTA button — white sticker, orange shadow, inverts on hover ── */
 .nav-cta {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 8px 18px;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
-  color: #fff;
-  background: var(--color-accent);
-  border: 2px solid rgba(0,0,0,0.2);
+  color: #08090D;
+  background: #ffffff;
+  border: none;
   border-radius: 4px;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+  box-shadow: 3px 3px 0 #FF6B35;
   text-decoration: none;
   white-space: nowrap;
-  transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease;
 }
 .nav-cta:hover {
-  background: var(--color-accent-hover);
+  background: #FF6B35;
+  color: #fff;
   transform: translate(1.5px, 1.5px);
-  box-shadow: 1.5px 1.5px 0 rgba(0,0,0,0.5);
+  box-shadow: 1.5px 1.5px 0 #fff;
 }
 .nav-cta:active {
   transform: translate(3px, 3px);
@@ -347,19 +348,21 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   gap: 8px;
   padding: 12px 20px;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 14px;
-  color: #fff;
-  background: var(--color-accent);
-  border: 2px solid rgba(0,0,0,0.2);
+  color: #08090D;
+  background: #ffffff;
+  border: none;
   border-radius: 4px;
-  box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 4px 4px 0 #FF6B35;
   text-decoration: none;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease;
 }
 .mobile-cta:hover {
+  background: #FF6B35;
+  color: #fff;
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  box-shadow: 2px 2px 0 #fff;
 }
 
 /* ── Drawer transition ──────────────────────────────────────────── */
