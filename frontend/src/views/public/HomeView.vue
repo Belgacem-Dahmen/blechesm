@@ -21,7 +21,9 @@
             </div>
 
             <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tightest leading-[1.05] mb-6 hero-title">
-              Votre mur, <span class="text-accent">votre fresque</span> —
+              Votre <span class="hero-word-slot"><Transition name="word-flip" mode="out-in"><span :key="heroWord" class="text-accent">{{ heroWord }}</span></Transition></span>,
+              
+              <br class="hidden sm:block" />
               <span class="relative inline-block">
                 visualisé
                 <svg class="absolute -bottom-1 left-0 w-full" height="6" viewBox="0 0 200 6" preserveAspectRatio="none" fill="none" aria-hidden="true">
@@ -438,7 +440,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { Camera, PenLine, Sparkles, Handshake, ArrowRight, Zap, Shield, Gift } from 'lucide-vue-next'
 import NavBar from '@/components/layout/NavBar.vue'
 import Footer from '@/components/layout/Footer.vue'
@@ -459,9 +461,18 @@ import stbUrl            from '@/assets/partners/stb.svg'
 
 const pageEl = ref(null)
 
+// ── Cycling hero word ─────────────────────────────────────────────
+const heroWords = ['mur', 'façade', 'sculpture', 'sol']
+const heroWordIndex = ref(0)
+const heroWord = computed(() => heroWords[heroWordIndex.value])
+let wordInterval = null
+
 // ── Scroll reveal ────────────────────────────────────────────────
 let observer = null
 onMounted(() => {
+  wordInterval = setInterval(() => {
+    heroWordIndex.value = (heroWordIndex.value + 1) % heroWords.length
+  }, 2500)
   observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -478,7 +489,10 @@ onMounted(() => {
   )
   pageEl.value?.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el))
 })
-onUnmounted(() => observer?.disconnect())
+onUnmounted(() => {
+  observer?.disconnect()
+  clearInterval(wordInterval)
+})
 
 // ── Utilities ───────────────────────────────────────────────────
 function hexAlpha(hex, a) {
@@ -1103,5 +1117,19 @@ const statBadges = [
   .service-features { max-height: none; opacity: 1; transform: none; }
   .service-cta { opacity: 1; transform: none; }
   .ai-tool-card, .ai-tool-line { transition: none; }
+  .word-flip-enter-active, .word-flip-leave-active { transition: none; }
 }
+
+/* ── Hero word cycling ──────────────────────────────────────────── */
+.hero-word-slot {
+  display: inline-block;
+  position: relative;
+}
+.word-flip-enter-active,
+.word-flip-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+.word-flip-enter-from { opacity: 0; transform: translateY(12px); }
+.word-flip-leave-to   { opacity: 0; transform: translateY(-12px); }
 </style>
