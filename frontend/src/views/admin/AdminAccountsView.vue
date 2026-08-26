@@ -104,7 +104,7 @@ async function handleCreate() {
 
   saving.value = true
   try {
-    const created = await createAdminAccount({ name: form.name, email: form.email })
+    const created = await createAdminAccount({ name: form.name, email: form.email, password: form.password })
     accounts.value.push(created)
     closeModal()
   } finally {
