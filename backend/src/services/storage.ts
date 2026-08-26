@@ -13,11 +13,13 @@ export async function uploadImage(buffer: Buffer, folder: string): Promise<strin
     return undefined
   }
   return new Promise((resolve, reject) => {
-    cloudinary.uploader
-      .upload_stream({ folder, resource_type: 'image' }, (err, result) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: 'image' },
+      (err, result) => {
         if (err || !result) return reject(err ?? new Error('Upload échoué'))
         resolve(result.secure_url)
-      })
-      .end(buffer)
+      }
+    ) as unknown as { end: (data: Buffer) => void }
+    stream.end(buffer)
   })
 }
