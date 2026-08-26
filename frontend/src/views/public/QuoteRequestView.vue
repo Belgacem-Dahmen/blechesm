@@ -428,9 +428,10 @@ async function handleSubmit() {
   try {
     await submitQuote({
       ...store.dimensions, ...store.contact,
+      serviceType: store.serviceType,
       description: store.description,
-      wallPhoto: store.wallPhotoUrl,
-      referencePhoto: store.referencePhotoUrl,
+      wallPhoto: store.wallPhoto,
+      referencePhoto: store.referencePhoto,
       generatedImage: store.generatedImage,
     })
     confirmed.value = true

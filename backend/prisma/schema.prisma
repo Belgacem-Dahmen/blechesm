@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("Admin")
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  phone     String?
+  city      String?
+  createdAt DateTime  @default(now())
+  requests  Request[]
+
+  magicToken     String?
+  magicExpiresAt DateTime?
+}
+
+model Request {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  status      String   @default("nouveau")
+  serviceType String
+
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id])
+
+  wallWidth      Float?
+  wallHeight     Float?
+  description    String
+  materialStyle  String?
+  surfaceFinish  String?
+
+  wallPhotoUrl      String?
+  referencePhotoUrl String?
+  generatedImageUrl String?
+
+  finalPrice     Float?
+  internalNotes  String  @default("")
+  idempotencyKey String?
+
+  messages Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  requestId String
+  request   Request  @relation(fields: [requestId], references: [id])
+  fromRole  String
+  content   String
+}
+
+model Portfolio {
+  id          String   @id @default(cuid())
+  title       String
+  style       String
+  city        String
+  year        Int
+  size        String
+  imageUrl    String
+  tags        String
+  description String
+  createdAt   DateTime @default(now())
+}

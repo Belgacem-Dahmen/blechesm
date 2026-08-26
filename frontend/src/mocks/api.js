@@ -1,129 +1,158 @@
-// Mock API — replace each function with a real fetch() call later without touching components
+// API client — appels réels vers le backend via axios
+// Configurer VITE_API_URL dans frontend/.env (défaut : http://localhost:3001)
 
-import { requestsData, portfolioData, adminsData } from './data.js'
+import api from '@/lib/axios.js'
 
-// Deep clone helper to avoid mutating seed data
-const clone = (obj) => JSON.parse(JSON.stringify(obj))
+// ─── Transformers — backend shape → shape attendue par les vues ─────────────
 
-// In-memory state (resets on page refresh — intentional for demo)
-let _requests = clone(requestsData)
-let _portfolio = clone(portfolioData)
-let _admins = clone(adminsData)
-
-const delay = (ms) => new Promise((r) => setTimeout(r, ms))
-
-// ─── AI Generation ───────────────────────────────────────────────────────────
-
-/**
- * Simulate Nano Banana API — returns a placeholder "generated" image URL
- */
-export async function generateFresco(wallPhoto, refPhoto, description) {
-  await delay(2500)
-  // Return a visually interesting graffiti/mural placeholder
-  const placeholders = [
-    'https://images.unsplash.com/photo-1547234935-80c7145ec969?w=1200&q=85',
-    'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=85',
-    'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=1200&q=85',
-    'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=1200&q=85',
-  ]
-  return placeholders[Math.floor(Math.random() * placeholders.length)]
+function toRequest(r) {
+  return {
+    id:             r.id,
+    createdAt:      r.createdAt,
+    status:         r.status,
+    serviceType:    r.serviceType,
+    client:         r.client ?? { name: '', email: '', phone: '', city: '' },
+    wall: {
+      width:        r.wallWidth  ?? null,
+      height:       r.wallHeight ?? null,
+      description:  r.description,
+    },
+    wallPhoto:      r.wallPhotoUrl      ?? null,
+    referencePhoto: r.referencePhotoUrl ?? null,
+    generatedImage: r.generatedImageUrl ?? null,
+    finalPrice:     r.finalPrice,
+    internalNotes:  r.internalNotes,
+    messages:       r.messages ?? [],
+  }
 }
 
-// ─── Requests ─────────────────────────────────────────────────────────────────
+function toPortfolio(p) {
+  return {
+    ...p,
+    image: p.imageUrl,
+    tags: typeof p.tags === 'string' ? JSON.parse(p.tags) : (p.tags ?? []),
+  }
+}
+
+// ─── Helper — blob URL → File ───────────────────────────────────────────────
+
+async function blobUrlToFile(url, filename) {
+  if (!url || typeof url !== 'string') return null
+  if (!url.startsWith('blob:') && !url.startsWith('data:')) return null
+  try {
+    const res  = await fetch(url)
+    const blob = await res.blob()
+    return new File([blob], filename, { type: blob.type })
+  } catch {
+    return null
+  }
+}
+
+// ─── AI Génération (async avec polling) ────────────────────────────────────
+
+export async function generateFresco(wallPhoto, refPhoto, description, serviceType = 'mural') {
+  const fd = new FormData()
+  fd.append('description', description ?? '')
+  fd.append('serviceType', serviceType)
+  if (wallPhoto instanceof File) fd.append('wallPhoto', wallPhoto)
+  if (refPhoto  instanceof File) fd.append('refPhoto',  refPhoto)
+
+  const { jobId } = await api.post('/api/generate', fd)
+
+  // Polling toutes les 2s jusqu'à status "done" (max 2 minutes)
+  for (let i = 0; i < 60; i++) {
+    await new Promise(r => setTimeout(r, 2000))
+    const job = await api.get(`/api/generate/${jobId}`)
+    if (job.status === 'done')  return job.url
+    if (job.status === 'error') throw new Error(job.error ?? 'Génération échouée')
+  }
+  throw new Error('Timeout — la génération a pris trop de temps')
+}
+
+// ─── Demandes ───────────────────────────────────────────────────────────────
 
 export async function getRequests() {
-  await delay(400)
-  return clone(_requests).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  const requests = await api.get('/api/requests')
+  return requests.map(toRequest)
 }
 
 export async function getRequest(id) {
-  await delay(250)
-  const item = _requests.find((r) => r.id === id)
-  if (!item) throw new Error(`Request ${id} not found`)
-  return clone(item)
+  return toRequest(await api.get(`/api/requests/${id}`))
 }
 
 export async function updateRequest(id, patch) {
-  await delay(350)
-  const idx = _requests.findIndex((r) => r.id === id)
-  if (idx === -1) throw new Error(`Request ${id} not found`)
-  _requests[idx] = { ..._requests[idx], ...patch }
-  return clone(_requests[idx])
+  return toRequest(await api.patch(`/api/requests/${id}`, patch))
 }
 
 export async function submitQuote(data) {
-  await delay(600)
-  const newRequest = {
-    id: String(Date.now()),
-    createdAt: new Date().toISOString(),
-    status: 'nouveau',
-    client: {
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      city: data.city,
-    },
-    wall: {
-      width: data.width,
-      height: data.height,
-      description: data.description,
-    },
-    wallPhoto: data.wallPhoto,
-    referencePhoto: data.referencePhoto || null,
-    generatedImage: data.generatedImage,
-    finalPrice: null,
-    internalNotes: '',
+  const fd = new FormData()
+
+  fd.append('name',        data.name        ?? '')
+  fd.append('email',       data.email       ?? '')
+  fd.append('phone',       data.phone       ?? '')
+  fd.append('city',        data.city        ?? '')
+  fd.append('serviceType', data.serviceType ?? 'mural')
+  fd.append('description', data.description ?? '')
+  if (data.width)  fd.append('width',  String(data.width))
+  if (data.height) fd.append('height', String(data.height))
+  if (data.generatedImage && typeof data.generatedImage === 'string') {
+    fd.append('generatedImage', data.generatedImage)
   }
-  _requests.unshift(newRequest)
-  return { success: true, id: newRequest.id }
+
+  const wallFile = data.wallPhoto instanceof File
+    ? data.wallPhoto
+    : await blobUrlToFile(data.wallPhoto, 'wall.jpg')
+  const refFile = data.referencePhoto instanceof File
+    ? data.referencePhoto
+    : await blobUrlToFile(data.referencePhoto, 'ref.jpg')
+
+  if (wallFile) fd.append('wallPhoto', wallFile)
+  if (refFile)  fd.append('refPhoto',  refFile)
+
+  return api.post('/api/requests', fd)
 }
 
-// ─── Portfolio ────────────────────────────────────────────────────────────────
+// ─── Portfolio ──────────────────────────────────────────────────────────────
 
 export async function getPortfolio() {
-  await delay(400)
-  return clone(_portfolio)
+  const items = await api.get('/api/portfolio')
+  return items.map(toPortfolio)
 }
 
 export async function createPortfolio(item) {
-  await delay(400)
-  const newItem = { ...item, id: String(Date.now()) }
-  _portfolio.unshift(newItem)
-  return clone(newItem)
+  const fd = new FormData()
+  for (const [k, v] of Object.entries(item)) {
+    if (k === 'image' && v instanceof File) {
+      fd.append('image', v)
+    } else if (k !== 'image' && v !== undefined && v !== null) {
+      fd.append(k, Array.isArray(v) ? JSON.stringify(v) : String(v))
+    }
+  }
+  return toPortfolio(await api.post('/api/portfolio', fd))
 }
 
 export async function updatePortfolio(id, item) {
-  await delay(350)
-  const idx = _portfolio.findIndex((p) => p.id === id)
-  if (idx === -1) throw new Error(`Portfolio item ${id} not found`)
-  _portfolio[idx] = { ..._portfolio[idx], ...item, id }
-  return clone(_portfolio[idx])
+  const fd = new FormData()
+  for (const [k, v] of Object.entries(item)) {
+    if (k === 'image' && v instanceof File) {
+      fd.append('image', v)
+    } else if (k !== 'image' && v !== undefined && v !== null) {
+      fd.append(k, Array.isArray(v) ? JSON.stringify(v) : String(v))
+    }
+  }
+  return toPortfolio(await api.put(`/api/portfolio/${id}`, fd))
 }
 
 export async function deletePortfolio(id) {
-  await delay(300)
-  const idx = _portfolio.findIndex((p) => p.id === id)
-  if (idx === -1) throw new Error(`Portfolio item ${id} not found`)
-  _portfolio.splice(idx, 1)
-  return { success: true }
+  return api.delete(`/api/portfolio/${id}`)
 }
 
-// ─── Admin Accounts ───────────────────────────────────────────────────────────
+// ─── Comptes Admin ──────────────────────────────────────────────────────────
 
 export async function getAdminAccounts() {
-  await delay(300)
-  return clone(_admins)
+  return api.get('/api/accounts')
 }
 
 export async function createAdminAccount(data) {
-  await delay(400)
-  const newAdmin = {
-    id: String(Date.now()),
-    name: data.name,
-    email: data.email,
-    createdAt: new Date().toISOString(),
-    role: 'Admin',
-  }
-  _admins.push(newAdmin)
-  return clone(newAdmin)
+  return api.post('/api/accounts', data)
 }

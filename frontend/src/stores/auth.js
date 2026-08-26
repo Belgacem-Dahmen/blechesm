@@ -1,27 +1,48 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import api from '@/lib/axios.js'
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false)
-  const currentUser = ref(null)
-  const error = ref(null)
+  const currentUser     = ref(null)
+  const error           = ref(null)
+  const initialized     = ref(false)
 
-  function login(email, password) {
+  async function login(email, password) {
     error.value = null
-    if (email === 'admin@demo.com' && password === 'demo') {
+    try {
+      const user = await api.post('/api/auth/admin/login', { email, password })
       isAuthenticated.value = true
-      currentUser.value = { name: 'Admin Principal', email }
+      currentUser.value     = user
+      initialized.value     = true
       return true
+    } catch (err) {
+      error.value = err.message ?? 'Email ou mot de passe incorrect.'
+      return false
     }
-    error.value = 'Email ou mot de passe incorrect.'
-    return false
   }
 
-  function logout() {
+  async function logout() {
+    try { await api.post('/api/auth/admin/logout') } catch { /* ignorer */ }
     isAuthenticated.value = false
-    currentUser.value = null
-    error.value = null
+    currentUser.value     = null
+    error.value           = null
+    initialized.value     = false
   }
 
-  return { isAuthenticated, currentUser, error, login, logout }
+  // Vérifie le cookie httpOnly auprès du serveur.
+  // No-op si déjà appelée dans cette session (évite un aller-retour inutile sur chaque navigation).
+  async function checkAuth() {
+    if (initialized.value) return
+    initialized.value = true
+    try {
+      const user            = await api.get('/api/auth/admin/me')
+      isAuthenticated.value = true
+      currentUser.value     = user
+    } catch {
+      isAuthenticated.value = false
+    }
+  }
+
+  return { isAuthenticated, currentUser, error, initialized, login, logout, checkAuth }
 })

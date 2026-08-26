@@ -1031,7 +1031,7 @@ watch(() => route.query.service, (newService) => {
 async function handleGenerate() {
   loading.value = true
   try {
-    const url = await generateFresco(store.wallPhoto ?? store.referencePhoto, store.referencePhoto, store.description)
+    const url = await generateFresco(store.wallPhoto ?? store.referencePhoto, store.referencePhoto, store.description, store.serviceType)
     store.setGeneratedImage(url)
     router.push('/resultat')
   } catch (e) {

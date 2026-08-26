@@ -60,8 +60,7 @@ async function handleLogin() {
   if (!password.value) { errors.password = 'Requis'; return }
 
   loading.value = true
-  await new Promise(r => setTimeout(r, 400))
-  const ok = authStore.login(email.value, password.value)
+  const ok = await authStore.login(email.value, password.value)
   loading.value = false
 
   if (ok) router.push('/admin/dashboard')

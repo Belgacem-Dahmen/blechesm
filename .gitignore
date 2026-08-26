@@ -1,5 +1,13 @@
 # Dependencies
 frontend/node_modules/
+backend/node_modules/
+
+# SQLite dev database
+backend/prisma/dev.db
+backend/prisma/*.db-journal
+
+# Claude Code
+.claude/
 
 # Build output
 frontend/dist/
