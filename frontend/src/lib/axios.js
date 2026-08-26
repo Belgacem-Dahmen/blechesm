@@ -12,7 +12,8 @@ api.interceptors.response.use(
     const message = err.response?.data?.message ?? err.message ?? 'Erreur serveur'
     const code    = err.response?.data?.error
     const status  = err.response?.status
-    return Promise.reject(Object.assign(new Error(message), { code, status }))
+    const details = err.response?.data?.details ?? []
+    return Promise.reject(Object.assign(new Error(message), { code, status, details }))
   }
 )
 

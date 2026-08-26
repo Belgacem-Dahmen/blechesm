@@ -112,7 +112,11 @@ async function handleCreate() {
     accounts.value.push(created)
     closeModal()
   } catch (err) {
-    apiError.value = err.message ?? 'Une erreur est survenue.'
+    if (err.details?.length) {
+      apiError.value = err.details.map(d => d.message).join(' · ')
+    } else {
+      apiError.value = err.message ?? 'Une erreur est survenue.'
+    }
   } finally {
     saving.value = false
   }
