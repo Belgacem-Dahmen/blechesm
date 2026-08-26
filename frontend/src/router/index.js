@@ -34,6 +34,11 @@ const routes = [
     component: () => import('@/views/public/ContactView.vue'),
   },
   {
+    path: '/portfolio',
+    name: 'portfolio',
+    component: () => import('@/views/public/PortfolioView.vue'),
+  },
+  {
     path: '/mentions-legales',
     name: 'legal',
     component: () => import('@/views/public/LegalView.vue'),
