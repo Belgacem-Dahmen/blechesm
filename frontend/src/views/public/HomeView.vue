@@ -1322,16 +1322,6 @@ const statBadges = [
   border-radius: 1px;
 }
 
-/* ── Keyframes ──────────────────────────────────────────────────── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fade-left {
-  from { opacity: 0; transform: translateX(32px) scale(0.97); }
-  to   { opacity: 1; transform: translateX(0) scale(1); }
-}
-
 /* ── AI Toolkit cards ───────────────────────────────────────────── */
 .ai-tool-card {
   position: relative;

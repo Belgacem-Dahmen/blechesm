@@ -1714,16 +1714,6 @@ async function handleGenerate() {
 .preview-enter-active, .preview-leave-active { transition: opacity 0.3s ease; }
 .preview-enter-from, .preview-leave-to { opacity: 0; }
 
-/* ── Keyframes ──────────────────────────────────────────────────── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fade-left {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .h-title, .h-sub, .sticker, .config-card, .cta-block, .chat-card,

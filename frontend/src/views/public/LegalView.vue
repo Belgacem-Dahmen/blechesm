@@ -292,12 +292,6 @@ const sections = [
   letter-spacing: 0.05em;
 }
 
-/* ── Keyframes ──────────────────────────────────────────────────── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .h-eyebrow, .h-title, .h-meta,

@@ -667,16 +667,6 @@ async function handleSubmit() {
 /* ── Confirmation ───────────────────────────────────────────────── */
 .confirmed-card { animation: fade-up 0.6s ease both; }
 
-/* ── Keyframes ──────────────────────────────────────────────────── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fade-left {
-  from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
 /* ── Fade transition ────────────────────────────────────────────── */
 .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
