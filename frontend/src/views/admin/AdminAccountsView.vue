@@ -83,6 +83,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { Plus, X, Trash2 } from 'lucide-vue-next'
 import { getAdminAccounts, createAdminAccount, deleteAdminAccount } from '@/mocks/api.js'
 import { useAuthStore } from '@/stores/auth.js'
+import { useConfirm } from '@/composables/useConfirm.js'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
@@ -90,6 +91,7 @@ import BaseBadge from '@/components/ui/BaseBadge.vue'
 import LoadingState from '@/components/ui/LoadingState.vue'
 
 const authStore = useAuthStore()
+const { ask } = useConfirm()
 const accounts = ref([])
 const loading = ref(true)
 const showModal = ref(false)
@@ -134,13 +136,17 @@ async function handleCreate() {
 }
 
 async function handleDelete(account) {
-  if (!confirm(`Supprimer le compte de ${account.name} ?`)) return
+  const ok = await ask(`Le compte de ${account.name} (${account.email}) sera définitivement supprimé.`, {
+    title: 'Supprimer ce compte',
+    confirmLabel: 'Supprimer',
+  })
+  if (!ok) return
   deletingId.value = account.id
   try {
     await deleteAdminAccount(account.id)
     accounts.value = accounts.value.filter(a => a.id !== account.id)
   } catch (err) {
-    alert(err.message ?? 'Erreur lors de la suppression.')
+    await ask(err.message ?? 'Erreur lors de la suppression.', { title: 'Erreur', confirmLabel: 'OK' })
   } finally {
     deletingId.value = null
   }

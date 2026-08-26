@@ -15,12 +15,16 @@
 
   <!-- ── Chatbot widget ─────────────────────────────────────────── -->
   <ChatBot />
+
+  <!-- ── Confirm dialog (global) ───────────────────────────────── -->
+  <ConfirmDialog />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import BlechEsmLoader from '@/components/ui/BlechEsmLoader.vue'
 import ChatBot from '@/components/ui/ChatBot.vue'
+import ConfirmDialog from '@/components/ui/ConfirmDialog.vue'
 
 const showSplash = ref(true)
 

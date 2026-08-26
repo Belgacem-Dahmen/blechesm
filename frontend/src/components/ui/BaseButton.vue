@@ -18,7 +18,7 @@
 
 <script setup>
 defineProps({
-  variant:  { type: String, default: 'primary' }, // primary | secondary | ghost
+  variant:  { type: String, default: 'primary' }, // primary | secondary | ghost | danger
   size:     { type: String, default: 'md' },       // sm | md | lg
   loading:  { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
@@ -110,6 +110,23 @@ defineProps({
 }
 .btn--ghost:active:not(.btn--disabled) {
   background: rgba(61, 123, 255, 0.12);
+}
+
+/* ── Danger — destructive action ───────────────────────────────── */
+.btn--danger {
+  background: #e53e3e;
+  color: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.50);
+}
+.btn--danger:hover:not(.btn--disabled) {
+  background: #c53030;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.50);
+}
+.btn--danger:active:not(.btn--disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.50);
 }
 
 /* ── Disabled ───────────────────────────────────────────────────── */
