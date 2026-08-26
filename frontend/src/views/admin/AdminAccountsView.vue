@@ -57,6 +57,7 @@
               <BaseInput v-model="form.name"     label="Nom complet"  placeholder="Alice Dupont"       required :error="errors.name" />
               <BaseInput v-model="form.email"    type="email" label="Email" placeholder="alice@blechesm.fr" required :error="errors.email" />
               <BaseInput v-model="form.password" type="password" label="Mot de passe" placeholder="••••••••" required :error="errors.password" />
+              <p v-if="apiError" class="text-warning text-sm">{{ apiError }}</p>
               <div class="flex gap-3 pt-2">
                 <BaseButton type="submit" :loading="saving">Créer le compte</BaseButton>
                 <BaseButton variant="ghost" type="button" @click="closeModal">Annuler</BaseButton>
@@ -85,11 +86,13 @@ const showModal = ref(false)
 const saving = ref(false)
 const form = reactive({ name: '', email: '', password: '' })
 const errors = reactive({ name: '', email: '', password: '' })
+const apiError = ref('')
 
 onMounted(async () => { accounts.value = await getAdminAccounts(); loading.value = false })
 
 function closeModal() {
   showModal.value = false
+  apiError.value = ''
   Object.assign(form, { name: '', email: '', password: '' })
   Object.assign(errors, { name: '', email: '', password: '' })
 }
@@ -102,11 +105,14 @@ async function handleCreate() {
   if (!form.password || form.password.length < 4) { errors.password = 'Min. 4 caractères'; valid = false }
   if (!valid) return
 
+  apiError.value = ''
   saving.value = true
   try {
     const created = await createAdminAccount({ name: form.name, email: form.email, password: form.password })
     accounts.value.push(created)
     closeModal()
+  } catch (err) {
+    apiError.value = err.message ?? 'Une erreur est survenue.'
   } finally {
     saving.value = false
   }
