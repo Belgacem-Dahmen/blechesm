@@ -37,10 +37,11 @@ router.post('/login', loginLimiter, validate(LoginSchema), async (req: Request, 
       { expiresIn: '7d' }
     )
 
+    const isProd = process.env.NODE_ENV === 'production'
     res.cookie('adminToken', token, {
       httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
+      sameSite: isProd ? 'none' : 'lax',
+      secure: isProd,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 
@@ -51,7 +52,8 @@ router.post('/login', loginLimiter, validate(LoginSchema), async (req: Request, 
 })
 
 router.post('/logout', (_req: Request, res: Response) => {
-  res.clearCookie('adminToken')
+  const isProd = process.env.NODE_ENV === 'production'
+  res.clearCookie('adminToken', { sameSite: isProd ? 'none' : 'lax', secure: isProd })
   res.json({ data: { success: true } })
 })
 

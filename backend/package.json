@@ -13,6 +13,9 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },

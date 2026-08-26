@@ -67,10 +67,11 @@ router.get('/verify', async (req: Request, res: Response, next: NextFunction) =>
       { expiresIn: '24h' }
     )
 
+    const isProd = process.env.NODE_ENV === 'production'
     res.cookie('clientToken', jwtToken, {
       httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
+      sameSite: isProd ? 'none' : 'lax',
+      secure: isProd,
       maxAge: 24 * 60 * 60 * 1000,
     })
 
@@ -81,7 +82,8 @@ router.get('/verify', async (req: Request, res: Response, next: NextFunction) =>
 })
 
 router.post('/logout', (_req: Request, res: Response) => {
-  res.clearCookie('clientToken')
+  const isProd = process.env.NODE_ENV === 'production'
+  res.clearCookie('clientToken', { sameSite: isProd ? 'none' : 'lax', secure: isProd })
   res.json({ data: { success: true } })
 })
 
