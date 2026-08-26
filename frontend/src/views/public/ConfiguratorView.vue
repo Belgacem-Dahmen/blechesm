@@ -3,14 +3,13 @@
     <NavBar />
 
     <!-- ── HERO ─────────────────────────────────────────────────────── -->
-    <section class="relative pt-24 pb-16 overflow-hidden hero-section">
+    <section class="relative pt-24 pb-10 overflow-hidden hero-section">
       <div class="absolute inset-0 grid-bg opacity-[0.07] pointer-events-none" />
       <div class="spray spray-orange absolute -top-12 -right-12 w-[260px] h-[260px]" style="opacity:0.045" />
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         <!-- Breadcrumb -->
-        <nav class="flex items-center gap-1.5 mb-8 text-xs text-text-3 h-eyebrow">
+        <nav class="flex items-center gap-1.5 mb-6 text-xs text-text-3">
           <RouterLink to="/" class="hover:text-text transition-colors">Accueil</RouterLink>
           <ChevronRight class="w-3 h-3" />
           <span class="text-accent font-medium">Configurateur IA</span>
@@ -18,48 +17,26 @@
 
         <div class="flex items-start justify-between gap-8">
           <div class="max-w-2xl">
-            <!-- Eyebrow -->
-            <div class="flex items-center gap-3 mb-5 h-eyebrow2">
+            <div class="flex items-center gap-3 mb-4">
               <span class="w-6 h-px bg-accent" />
               <span class="text-xs font-mono uppercase tracking-widest text-accent">Blechesm AI Platform</span>
-              <svg width="48" height="22" viewBox="0 0 48 22" class="text-warning opacity-60 hidden sm:block" fill="none" aria-hidden="true">
-                <path d="M3,11 C12,4 30,4 42,11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M35,6 L43,12 L35,16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
             </div>
-
-            <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tightest leading-[0.92] mb-5 h-title">
-              {{ currentService.heroTitle }}<br />
+            <h1 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightest leading-[0.92] mb-4 h-title">
+              Configurateur IA<br />
               <span class="relative inline-block text-accent">
-                {{ currentService.heroAccent }}
+                en 4 étapes
                 <svg class="absolute -bottom-1 left-0 w-full" height="8" viewBox="0 0 400 8" preserveAspectRatio="none" fill="none" aria-hidden="true">
                   <path d="M0,4 Q50,0 100,4 Q150,8 200,4 Q250,0 300,4 Q350,8 400,4" stroke="#FF6B35" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
                 </svg>
               </span>
             </h1>
-
-            <p class="text-text-2 text-base leading-relaxed mb-8 max-w-lg h-sub">
-              {{ currentService.heroDesc }}
+            <p class="text-text-2 text-base leading-relaxed max-w-lg h-sub">
+              Suivez les étapes pour configurer votre projet. Notre IA génère un aperçu réaliste en ~2 secondes.
             </p>
-
-            <!-- 3-step funnel -->
-            <div class="flex items-center gap-0 h-funnel">
-              <div v-for="(step, i) in funnelSteps" :key="i" class="flex items-center">
-                <div class="funnel-step" :style="{ '--fs': step.color }"
-                  :class="i === 0 ? 'funnel-step--active' : ''">
-                  <span class="funnel-num">{{ String(i+1).padStart(2,'0') }}</span>
-                  <span class="funnel-label">{{ step.label }}</span>
-                </div>
-                <svg v-if="i < funnelSteps.length - 1" width="28" height="14" viewBox="0 0 28 14" class="shrink-0 text-text-3 opacity-40 mx-1" fill="none">
-                  <path d="M2,7 Q12,2 22,7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <path d="M18,4 L23,7 L18,10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-            </div>
           </div>
 
           <!-- Desktop stickers -->
-          <div class="hidden lg:flex flex-col items-end gap-3 pt-8 shrink-0 h-stickers">
+          <div v-if="currentStep > 1" class="hidden lg:flex flex-col items-end gap-3 pt-6 shrink-0">
             <div v-for="(s, i) in currentService.stickers" :key="s.label"
               class="sticker" :style="{ '--sc': s.color, transform: `rotate(${s.rotate}deg)`, animationDelay: `${0.3 + i * 0.1}s` }">
               {{ s.label }}
@@ -69,22 +46,49 @@
       </div>
     </section>
 
-    <!-- ── SERVICE SELECTOR ───────────────────────────────────────────── -->
-    <div class="sticky top-16 z-40 bg-bg/95 backdrop-blur-md border-b border-border h-service-tabs">
+    <!-- ── STEP INDICATOR ───────────────────────────────────────────── -->
+    <div class="sticky top-16 z-40 bg-bg/95 backdrop-blur-md border-b border-border">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex gap-1 py-2 overflow-x-auto scrollbar-none">
-          <button
-            v-for="svc in services"
-            :key="svc.id"
-            class="service-tab"
-            :class="{ 'service-tab--active': store.serviceType === svc.id }"
-            :style="store.serviceType === svc.id ? { '--tc': svc.color } : {}"
-            @click="store.serviceType = svc.id"
+        <div class="flex items-center py-3 gap-1 sm:gap-2 overflow-x-auto scrollbar-none">
+          <div
+            v-for="(step, i) in wizardSteps"
+            :key="i"
+            class="flex items-center gap-1 sm:gap-2 shrink-0"
           >
-            <component :is="svc.icon" class="w-4 h-4 shrink-0" />
-            <span class="font-medium">{{ svc.label }}</span>
-            <span class="tab-badge hidden sm:inline">{{ svc.badge }}</span>
-          </button>
+            <button
+              class="step-pill"
+              :class="{
+                'step-pill--done': currentStep > i + 1,
+                'step-pill--active': currentStep === i + 1,
+                'step-pill--idle': currentStep < i + 1,
+              }"
+              :style="currentStep >= i + 1 ? { '--sp': step.color } : {}"
+              @click="goToStep(i + 1)"
+            >
+              <span class="step-pill-num">
+                <Check v-if="currentStep > i + 1" class="w-3 h-3" />
+                <span v-else>{{ String(i + 1).padStart(2, '0') }}</span>
+              </span>
+              <span class="step-pill-label hidden sm:inline">{{ step.label }}</span>
+            </button>
+            <svg v-if="i < wizardSteps.length - 1" width="20" height="8" viewBox="0 0 20 8" class="shrink-0 text-text-3 opacity-30" fill="none">
+              <path d="M1,4 Q8,1 16,4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M13,2 L17,4 L13,6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- Progress fraction -->
+          <div class="ml-auto shrink-0 font-mono text-[11px] text-text-3">
+            {{ currentStep }}/{{ wizardSteps.length }}
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="h-0.5 bg-border-strong -mx-4 sm:-mx-6 lg:-mx-8">
+          <div
+            class="h-full transition-all duration-500 ease-out"
+            :style="{ width: `${(currentStep / wizardSteps.length) * 100}%`, background: currentServiceColor }"
+          />
         </div>
       </div>
     </div>
@@ -93,14 +97,67 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div class="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
 
-        <!-- ── LEFT: FORM ─────────────────────────────────────────── -->
+        <!-- ── LEFT: STEP CONTENT ──────────────────────────────────── -->
         <div class="lg:col-span-3 space-y-4">
-          <form @submit.prevent="handleGenerate" novalidate>
 
-            <!-- ── MURAL SERVICE ── -->
+          <!-- ══ STEP 1 — Choose service ══════════════════════════════ -->
+          <Transition name="step" mode="out-in">
+          <div v-if="currentStep === 1" key="step1" class="space-y-4">
+            <div class="step-header">
+              <h2 class="font-display text-2xl font-semibold text-text">Quel type de projet ?</h2>
+              <p class="text-text-3 text-sm mt-1">Sélectionnez le service qui correspond à votre besoin</p>
+            </div>
+
+            <div class="grid gap-4">
+              <button
+                v-for="svc in services"
+                :key="svc.id"
+                class="service-card"
+                :class="{ 'service-card--active': store.serviceType === svc.id }"
+                :style="store.serviceType === svc.id ? { '--sc': svc.color } : {}"
+                @click="selectService(svc.id)"
+              >
+                <div class="service-card-icon" :style="{ '--sc': svc.color }">
+                  <component :is="svc.icon" class="w-6 h-6" />
+                </div>
+                <div class="flex-1 text-left">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="font-display font-semibold text-text text-base">{{ svc.label }}</span>
+                    <span class="svc-badge" :style="{ '--sc': svc.color }">{{ svc.badge }}</span>
+                  </div>
+                  <p class="text-text-3 text-sm leading-relaxed">{{ svc.heroDesc }}</p>
+                </div>
+                <div class="service-card-check" :class="store.serviceType === svc.id ? 'service-card-check--active' : ''">
+                  <Check v-if="store.serviceType === svc.id" class="w-4 h-4" :style="{ color: svc.color }" />
+                </div>
+              </button>
+            </div>
+
+            <!-- Nav -->
+            <div class="step-nav">
+              <div />
+              <BaseButton size="lg" @click="nextStep">
+                Continuer
+                <ChevronRight class="w-4 h-4" />
+              </BaseButton>
+            </div>
+          </div>
+          </Transition>
+
+          <!-- ══ STEP 2 — Photos ═══════════════════════════════════════ -->
+          <Transition name="step" mode="out-in">
+          <div v-if="currentStep === 2" key="step2" class="space-y-4">
+            <div class="step-header">
+              <h2 class="font-display text-2xl font-semibold text-text">Importez vos photos</h2>
+              <p class="text-text-3 text-sm mt-1">
+                <span v-if="store.serviceType === 'mural'">Photographiez votre mur entier en lumière naturelle</span>
+                <span v-else-if="store.serviceType === 'sculpture'">Importez une image nette de votre sujet à sculpter</span>
+                <span v-else>Prenez une photo de dessus ou à 45° de votre sol</span>
+              </p>
+            </div>
+
+            <!-- Mural: wall photo (required) -->
             <template v-if="store.serviceType === 'mural'">
-
-              <!-- Step 1 — Wall photo -->
               <div class="config-card" :class="store.wallPhoto ? 'config-card--done' : ''" style="--cc: #FB923C">
                 <div class="config-accent" />
                 <div class="flex items-start gap-4 mb-5">
@@ -127,7 +184,6 @@
                 />
               </div>
 
-              <!-- Step 2 — Reference photo -->
               <div class="config-card" :class="store.referencePhoto ? 'config-card--done' : ''" style="--cc: #F472B6">
                 <div class="config-accent" />
                 <div class="flex items-start gap-4 mb-5">
@@ -151,57 +207,10 @@
                   @update:modelValue="store.setReferencePhoto"
                 />
               </div>
-
-              <!-- Step 3 — Dimensions -->
-              <div class="config-card" style="--cc: #22D3EE">
-                <div class="config-accent" />
-                <div class="flex items-start gap-4 mb-5">
-                  <div class="config-badge config-badge--idle">
-                    <span>03</span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                      <h3 class="font-display font-semibold text-text">Dimensions du mur</h3>
-                      <span class="req-badge req-badge--optional">Optionnel</span>
-                    </div>
-                    <p class="text-text-3 text-xs">Utilisé pour l'estimation tarifaire en temps réel</p>
-                  </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-xs text-text-3 mb-1.5 font-mono uppercase tracking-wider">Largeur (m)</label>
-                    <input
-                      v-model="store.dimensions.width"
-                      type="number"
-                      min="0"
-                      step="0.5"
-                      placeholder="Ex: 8"
-                      class="dim-input"
-                    />
-                  </div>
-                  <div>
-                    <label class="block text-xs text-text-3 mb-1.5 font-mono uppercase tracking-wider">Hauteur (m)</label>
-                    <input
-                      v-model="store.dimensions.height"
-                      type="number"
-                      min="0"
-                      step="0.5"
-                      placeholder="Ex: 4"
-                      class="dim-input"
-                    />
-                  </div>
-                </div>
-                <p v-if="wallArea > 0" class="mt-3 text-xs font-mono text-accent">
-                  Surface : {{ wallArea.toFixed(1) }} m² · Estimation : {{ priceRange }}
-                </p>
-              </div>
-
             </template>
 
-            <!-- ── SCULPTURE SERVICE ── -->
+            <!-- Sculpture: reference image (required) -->
             <template v-if="store.serviceType === 'sculpture'">
-
-              <!-- Step 1 — Reference image -->
               <div class="config-card" :class="store.referencePhoto ? 'config-card--done' : ''" style="--cc: #A78BFA">
                 <div class="config-accent" />
                 <div class="flex items-start gap-4 mb-5">
@@ -227,13 +236,108 @@
                   @update:modelValue="store.setReferencePhoto"
                 />
               </div>
+            </template>
 
-              <!-- Step 2 — Material style -->
+            <!-- Sol: floor photo (required) -->
+            <template v-if="store.serviceType === 'sol'">
+              <div class="config-card" :class="store.wallPhoto ? 'config-card--done' : ''" style="--cc: #FF6B35">
+                <div class="config-accent" />
+                <div class="flex items-start gap-4 mb-5">
+                  <div class="config-badge" :class="store.wallPhoto ? 'config-badge--done' : 'config-badge--active'">
+                    <Check v-if="store.wallPhoto" class="w-4 h-4" />
+                    <span v-else>01</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                      <h3 class="font-display font-semibold text-text">Photo du sol</h3>
+                      <span class="req-badge req-badge--required">Requis</span>
+                    </div>
+                    <p class="text-text-3 text-xs">Vue de dessus ou à 45° — notre IA corrige la perspective automatiquement</p>
+                  </div>
+                </div>
+                <FileDropzone
+                  v-model="store.wallPhoto"
+                  placeholder="Glissez ou cliquez pour importer votre sol"
+                  hint="PNG, JPG, WEBP · vue de dessus ou à 45° recommandée"
+                  icon="upload"
+                  required
+                  :error="errors.wall"
+                  @update:modelValue="store.setWallPhoto"
+                />
+              </div>
+            </template>
+
+            <!-- Error message -->
+            <p v-if="errors.wall" class="text-xs text-error font-mono flex items-center gap-1.5">
+              <span class="w-1 h-1 rounded-full bg-error" />
+              {{ errors.wall }}
+            </p>
+
+            <!-- Nav -->
+            <div class="step-nav">
+              <button class="step-back" @click="prevStep">
+                <ChevronLeft class="w-4 h-4" />
+                Retour
+              </button>
+              <BaseButton size="lg" @click="validateAndNext">
+                Continuer
+                <ChevronRight class="w-4 h-4" />
+              </BaseButton>
+            </div>
+          </div>
+          </Transition>
+
+          <!-- ══ STEP 3 — Options ══════════════════════════════════════ -->
+          <Transition name="step" mode="out-in">
+          <div v-if="currentStep === 3" key="step3" class="space-y-4">
+            <div class="step-header">
+              <h2 class="font-display text-2xl font-semibold text-text">Personnalisez</h2>
+              <p class="text-text-3 text-sm mt-1">
+                <span v-if="store.serviceType === 'mural'">Indiquez les dimensions pour une estimation de prix</span>
+                <span v-else-if="store.serviceType === 'sculpture'">Choisissez la matière et ajustez les détails</span>
+                <span v-else>Sélectionnez la finition et renseignez la surface</span>
+              </p>
+            </div>
+
+            <!-- Mural: dimensions -->
+            <template v-if="store.serviceType === 'mural'">
+              <div class="config-card" style="--cc: #22D3EE">
+                <div class="config-accent" />
+                <div class="flex items-start gap-4 mb-5">
+                  <div class="config-badge config-badge--idle">
+                    <span>01</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap mb-1">
+                      <h3 class="font-display font-semibold text-text">Dimensions du mur</h3>
+                      <span class="req-badge req-badge--optional">Optionnel</span>
+                    </div>
+                    <p class="text-text-3 text-xs">Utilisé pour l'estimation tarifaire en temps réel</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs text-text-3 mb-1.5 font-mono uppercase tracking-wider">Largeur (m)</label>
+                    <input v-model="store.dimensions.width" type="number" min="0" step="0.5" placeholder="Ex: 8" class="dim-input" />
+                  </div>
+                  <div>
+                    <label class="block text-xs text-text-3 mb-1.5 font-mono uppercase tracking-wider">Hauteur (m)</label>
+                    <input v-model="store.dimensions.height" type="number" min="0" step="0.5" placeholder="Ex: 4" class="dim-input" />
+                  </div>
+                </div>
+                <p v-if="wallArea > 0" class="mt-3 text-xs font-mono text-accent">
+                  Surface : {{ wallArea.toFixed(1) }} m² · Estimation : {{ priceRange }}
+                </p>
+              </div>
+            </template>
+
+            <!-- Sculpture: material + sliders -->
+            <template v-if="store.serviceType === 'sculpture'">
               <div class="config-card" style="--cc: #A78BFA">
                 <div class="config-accent" />
                 <div class="flex items-start gap-4 mb-5">
                   <div class="config-badge config-badge--active">
-                    <span>02</span>
+                    <span>01</span>
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 flex-wrap mb-1">
@@ -260,12 +364,11 @@
                 </div>
               </div>
 
-              <!-- Step 3 — Refinement sliders -->
               <div class="config-card" style="--cc: #A78BFA">
                 <div class="config-accent" />
                 <div class="flex items-start gap-4 mb-5">
                   <div class="config-badge config-badge--idle">
-                    <span>03</span>
+                    <span>02</span>
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 flex-wrap mb-1">
@@ -292,45 +395,15 @@
                   </div>
                 </div>
               </div>
-
             </template>
 
-            <!-- ── SOL SERVICE ── -->
+            <!-- Sol: surface finish + dimensions -->
             <template v-if="store.serviceType === 'sol'">
-
-              <!-- Step 1 — Floor photo -->
-              <div class="config-card" :class="store.wallPhoto ? 'config-card--done' : ''" style="--cc: #FF6B35">
-                <div class="config-accent" />
-                <div class="flex items-start gap-4 mb-5">
-                  <div class="config-badge" :class="store.wallPhoto ? 'config-badge--done' : 'config-badge--active'">
-                    <Check v-if="store.wallPhoto" class="w-4 h-4" />
-                    <span v-else>01</span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 flex-wrap mb-1">
-                      <h3 class="font-display font-semibold text-text">Photo du sol</h3>
-                      <span class="req-badge req-badge--required">Requis</span>
-                    </div>
-                    <p class="text-text-3 text-xs">Vue de dessus ou à 45° — notre IA corrige la perspective automatiquement</p>
-                  </div>
-                </div>
-                <FileDropzone
-                  v-model="store.wallPhoto"
-                  placeholder="Glissez ou cliquez pour importer votre sol"
-                  hint="PNG, JPG, WEBP · vue de dessus ou à 45° recommandée"
-                  icon="upload"
-                  required
-                  :error="errors.wall"
-                  @update:modelValue="store.setWallPhoto"
-                />
-              </div>
-
-              <!-- Step 2 — Surface finish -->
               <div class="config-card" style="--cc: #FF6B35">
                 <div class="config-accent" />
                 <div class="flex items-start gap-4 mb-5">
                   <div class="config-badge config-badge--active">
-                    <span>02</span>
+                    <span>01</span>
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 flex-wrap mb-1">
@@ -357,12 +430,11 @@
                 </div>
               </div>
 
-              <!-- Step 3 — Surface area -->
               <div class="config-card" style="--cc: #FF6B35">
                 <div class="config-accent" />
                 <div class="flex items-start gap-4 mb-5">
                   <div class="config-badge config-badge--idle">
-                    <span>03</span>
+                    <span>02</span>
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 flex-wrap mb-1">
@@ -386,26 +458,45 @@
                   Surface : {{ wallArea.toFixed(1) }} m² · Estimation : {{ solPriceRange }}
                 </p>
               </div>
-
             </template>
 
-            <!-- ── AI CHAT DESCRIPTION ────────────────────────────────── -->
+            <!-- Nav -->
+            <div class="step-nav">
+              <button class="step-back" @click="prevStep">
+                <ChevronLeft class="w-4 h-4" />
+                Retour
+              </button>
+              <BaseButton size="lg" @click="nextStep">
+                Continuer
+                <ChevronRight class="w-4 h-4" />
+              </BaseButton>
+            </div>
+          </div>
+          </Transition>
+
+          <!-- ══ STEP 4 — AI Description + Generate ═══════════════════ -->
+          <Transition name="step" mode="out-in">
+          <div v-if="currentStep === 4" key="step4" class="space-y-4">
+            <div class="step-header">
+              <h2 class="font-display text-2xl font-semibold text-text">Décrivez votre vision</h2>
+              <p class="text-text-3 text-sm mt-1">Guidez l'IA en répondant à quelques questions rapides</p>
+            </div>
+
+            <!-- AI Chat -->
             <div class="chat-card" :class="chatDone ? 'chat-card--done' : ''" style="--cc: #3D7BFF">
               <div class="config-accent" />
-
-              <!-- Step header — matches config-card structure -->
               <div class="chat-header">
                 <div class="flex items-start gap-4">
                   <div class="config-badge shrink-0" :class="chatDone ? 'config-badge--done' : 'config-badge--active'">
                     <Check v-if="chatDone" class="w-4 h-4" />
-                    <span v-else>04</span>
+                    <span v-else>01</span>
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 flex-wrap mb-0.5">
-                      <h3 class="font-display font-semibold text-text">Décrivez votre projet</h3>
+                      <h3 class="font-display font-semibold text-text">Assistant IA</h3>
                       <span class="req-badge req-badge--required">Requis</span>
                     </div>
-                    <p class="text-[10px] font-mono text-text-3 uppercase tracking-wider">Guidez l'IA — style, couleurs, références</p>
+                    <p class="text-[10px] font-mono text-text-3 uppercase tracking-wider">Style, couleurs, références</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
@@ -419,7 +510,6 @@
                 </div>
               </div>
 
-              <!-- Messages -->
               <div ref="chatContainer" class="chat-messages">
                 <TransitionGroup name="msg">
                   <div
@@ -435,8 +525,6 @@
                     </div>
                   </div>
                 </TransitionGroup>
-
-                <!-- Typing indicator -->
                 <div v-if="isTyping" class="chat-row chat-row--ai">
                   <div class="ai-avatar ai-avatar--sm shrink-0"><Sparkles class="w-3 h-3" /></div>
                   <div class="chat-bubble chat-bubble--ai chat-typing">
@@ -445,18 +533,12 @@
                 </div>
               </div>
 
-              <!-- Suggestion chips -->
               <div v-if="currentSuggestions.length && !chatDone && !isTyping" class="chat-suggestions">
-                <button
-                  v-for="s in currentSuggestions"
-                  :key="s"
-                  type="button"
-                  class="chip"
-                  @click="sendMessage(s)"
-                >{{ s }}</button>
+                <button v-for="s in currentSuggestions" :key="s" type="button" class="chip" @click="sendMessage(s)">
+                  {{ s }}
+                </button>
               </div>
 
-              <!-- Input -->
               <div class="chat-input-row">
                 <input
                   ref="chatInputEl"
@@ -479,15 +561,17 @@
               </div>
             </div>
 
-            <!-- ── CTA BLOCK ──────────────────────────────────────────── -->
+            <!-- Summary checklist + CTA -->
             <div class="cta-block">
-              <!-- Spray accent -->
               <div class="absolute -top-8 right-8 w-48 h-48 rounded-full pointer-events-none"
                 style="background:#3D7BFF; filter:blur(70px); opacity:0.08;" />
-
               <div class="relative z-10">
-                <!-- Checklist -->
+                <p class="font-mono text-[11px] font-bold uppercase tracking-widest text-text-3 mb-4">Récapitulatif</p>
                 <div class="flex flex-wrap gap-x-6 gap-y-2 mb-5">
+                  <div class="check-row check-row--done">
+                    <CheckCircle2 class="w-3.5 h-3.5" />
+                    Service : {{ currentService.label }}
+                  </div>
                   <div class="check-row" :class="(store.wallPhoto || store.referencePhoto) ? 'check-row--done' : ''">
                     <CheckCircle2 v-if="store.wallPhoto || store.referencePhoto" class="w-3.5 h-3.5" />
                     <Circle v-else class="w-3.5 h-3.5" />
@@ -508,9 +592,8 @@
                   </div>
                 </div>
 
-                <!-- Button row -->
                 <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                  <BaseButton type="submit" size="lg" :loading="loading" class="w-full sm:w-auto">
+                  <BaseButton size="lg" :loading="loading" :disabled="!chatDone" class="w-full sm:w-auto" @click="handleGenerate">
                     <Sparkles class="w-4 h-4" />
                     {{ currentService.cta }}
                   </BaseButton>
@@ -522,11 +605,20 @@
               </div>
             </div>
 
-          </form>
+            <!-- Nav -->
+            <div class="step-nav">
+              <button class="step-back" @click="prevStep">
+                <ChevronLeft class="w-4 h-4" />
+                Retour
+              </button>
+            </div>
+          </div>
+          </Transition>
+
         </div>
 
         <!-- ── RIGHT: SIDEBAR ─────────────────────────────────────── -->
-        <div class="lg:col-span-2 space-y-5 lg:sticky lg:top-28">
+        <div v-if="currentStep > 1" class="lg:col-span-2 space-y-5 lg:sticky lg:top-28">
 
           <!-- Live preview -->
           <div class="preview-card">
@@ -620,7 +712,7 @@
 import { ref, reactive, computed, watch, onMounted, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import {
-  ChevronRight, Check, CheckCircle2, Circle,
+  ChevronRight, ChevronLeft, Check, CheckCircle2, Circle,
   Sparkles, Lightbulb, ImageIcon, Eye, FileText,
   Sun, Maximize2, AlignLeft, PenLine, Layers, Grid3x3,
 } from 'lucide-vue-next'
@@ -628,16 +720,53 @@ import { useRequestStore } from '@/stores/request.js'
 import { generateFresco } from '@/mocks/api.js'
 import NavBar from '@/components/layout/NavBar.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
-import BaseInput from '@/components/ui/BaseInput.vue'
 import FileDropzone from '@/components/ui/FileDropzone.vue'
 
 const store = useRequestStore()
 const router = useRouter()
 const route = useRoute()
 const loading = ref(false)
-const errors = reactive({ wall: '', description: '' })
+const errors = reactive({ wall: '' })
 const thickness = ref(60)
 const contrast = ref(70)
+
+// ── Wizard step state ──────────────────────────────────────────────
+const currentStep = ref(1)
+const totalSteps = 4
+
+const wizardSteps = [
+  { label: 'Service',     color: '#FB923C' },
+  { label: 'Photos',      color: '#3D7BFF' },
+  { label: 'Options',     color: '#A78BFA' },
+  { label: 'Description', color: '#4ADE80' },
+]
+
+function goToStep(n) {
+  if (n < currentStep.value) currentStep.value = n
+}
+
+function nextStep() {
+  if (currentStep.value < totalSteps) currentStep.value++
+}
+
+function prevStep() {
+  if (currentStep.value > 1) currentStep.value--
+}
+
+function validateAndNext() {
+  errors.wall = ''
+  const needsPhoto = store.serviceType === 'sculpture' ? store.referencePhoto : store.wallPhoto
+  if (!needsPhoto) {
+    errors.wall = 'Veuillez importer une photo avant de continuer.'
+    return
+  }
+  nextStep()
+}
+
+function selectService(id) {
+  store.serviceType = id
+  nextStep()
+}
 
 // ── Service definitions ────────────────────────────────────────────
 const services = [
@@ -725,6 +854,7 @@ const services = [
 ]
 
 const currentService = computed(() => services.find(s => s.id === store.serviceType) ?? services[0])
+const currentServiceColor = computed(() => currentService.value.color)
 
 // ── Materials (sculpture) ──────────────────────────────────────────
 const materials = [
@@ -742,7 +872,7 @@ const surfaceFinishes = [
   { id: 'metallique', label: 'Métallique', desc: 'Effet miroir & chrome', color: '#A78BFA', gradient: 'linear-gradient(135deg, #7C3AED, #C4B5FD)' },
 ]
 
-// ── Computed preview URL ───────────────────────────────────────────
+// ── Preview URL ────────────────────────────────────────────────────
 const previewUrl = computed(() => {
   if (store.serviceType === 'sculpture') return store.referencePhotoUrl
   return store.wallPhotoUrl
@@ -778,12 +908,6 @@ const estimatedTotal = computed(() => {
 })
 
 // ── Static data ────────────────────────────────────────────────────
-const funnelSteps = [
-  { label: 'Configurer',    color: '#FB923C' },
-  { label: 'Visualiser',   color: '#3D7BFF' },
-  { label: 'Recevoir devis', color: '#4ADE80' },
-]
-
 const nextSteps = [
   {
     title: "L'IA génère votre rendu",
@@ -805,14 +929,14 @@ const nextSteps = [
   },
 ]
 
-// ── AI Chat ───────────────────────────────────────────────────────
-const chatMessages  = ref([])
-const chatInput     = ref('')
-const chatStep      = ref(0)
-const isTyping      = ref(false)
-const chatDone      = ref(false)
-const chatContainer = ref(null)
-const chatInputEl   = ref(null)
+// ── AI Chat ────────────────────────────────────────────────────────
+const chatMessages   = ref([])
+const chatInput      = ref('')
+const chatStep       = ref(0)
+const isTyping       = ref(false)
+const chatDone       = ref(false)
+const chatContainer  = ref(null)
+const chatInputEl    = ref(null)
 
 const chatQuestionSets = {
   mural: [
@@ -833,7 +957,7 @@ const chatQuestionSets = {
   ],
 }
 
-const chatQuestions     = computed(() => chatQuestionSets[store.serviceType] ?? chatQuestionSets.mural)
+const chatQuestions      = computed(() => chatQuestionSets[store.serviceType] ?? chatQuestionSets.mural)
 const currentSuggestions = computed(() => chatQuestions.value[chatStep.value]?.suggestions ?? [])
 
 function delay(ms) { return new Promise(r => setTimeout(r, ms)) }
@@ -863,7 +987,6 @@ async function sendMessage(suggestion) {
   chatMessages.value.push({ role: 'user', text })
   scrollChat()
 
-  // Build description from all user messages
   store.description = chatMessages.value
     .filter(m => m.role === 'user')
     .map(m => m.text)
@@ -890,10 +1013,13 @@ onMounted(() => {
   const requested = route.query.service
   if (requested && validServices.includes(requested)) {
     store.serviceType = requested
+    currentStep.value = 2
   }
   initChat()
 })
+
 watch(() => store.serviceType, initChat)
+
 watch(() => route.query.service, (newService) => {
   const validServices = ['mural', 'sculpture', 'sol']
   if (newService && validServices.includes(newService)) {
@@ -901,14 +1027,8 @@ watch(() => route.query.service, (newService) => {
   }
 })
 
-// ── Form submit ────────────────────────────────────────────────────
+// ── Generate ───────────────────────────────────────────────────────
 async function handleGenerate() {
-  errors.wall = ''
-  const needsPhoto = store.serviceType === 'sculpture' ? store.referencePhoto : store.wallPhoto
-  if (!needsPhoto) {
-    errors.wall = 'Veuillez importer une photo.'
-    return
-  }
   loading.value = true
   try {
     const url = await generateFresco(store.wallPhoto ?? store.referencePhoto, store.referencePhoto, store.description)
@@ -938,59 +1058,179 @@ async function handleGenerate() {
   pointer-events: none;
 }
 .spray-orange { background: #FF6B35; }
-.spray-cyan   { background: #22D3EE; }
 
 /* ── Hero animations ────────────────────────────────────────────── */
-.h-eyebrow  { animation: fade-up 0.4s ease 0.05s both; }
-.h-eyebrow2 { animation: fade-up 0.5s ease 0.12s both; }
-.h-title    { animation: fade-up 0.6s ease 0.22s both; }
-.h-sub      { animation: fade-up 0.5s ease 0.36s both; }
-.h-funnel   { animation: fade-up 0.5s ease 0.48s both; }
-.h-stickers { animation: fade-left 0.6s ease 0.2s both; }
-.h-service-tabs { animation: fade-up 0.4s ease 0.55s both; }
+.h-title { animation: fade-up 0.6s ease 0.1s both; }
+.h-sub   { animation: fade-up 0.5s ease 0.2s both; }
 
-/* ── Service tabs ───────────────────────────────────────────────── */
+/* ── Scrollbar none ─────────────────────────────────────────────── */
 .scrollbar-none { scrollbar-width: none; }
 .scrollbar-none::-webkit-scrollbar { display: none; }
 
-.service-tab {
+/* ── Step pills ─────────────────────────────────────────────────── */
+.step-pill {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 16px;
+  gap: 6px;
+  padding: 5px 10px;
   border-radius: 6px;
   border: 1.5px solid transparent;
-  font-size: 13px;
-  color: var(--color-text-3);
   background: transparent;
   cursor: pointer;
   white-space: nowrap;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
-.service-tab:hover {
-  color: var(--color-text);
-  background: rgba(255,255,255,0.04);
+.step-pill--active {
+  border-color: color-mix(in srgb, var(--sp) 45%, transparent);
+  background: color-mix(in srgb, var(--sp) 10%, transparent);
 }
-.service-tab--active {
-  color: var(--tc);
-  border-color: color-mix(in srgb, var(--tc) 40%, transparent);
-  background: color-mix(in srgb, var(--tc) 8%, transparent);
+.step-pill--done {
+  border-color: color-mix(in srgb, var(--sp) 25%, transparent);
+  background: transparent;
+}
+.step-pill--idle {
+  border-color: var(--color-border);
+  background: transparent;
+  cursor: default;
 }
 
-.tab-badge {
+.step-pill-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-mono);
   font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.step-pill--active .step-pill-num {
+  background: var(--sp);
+  color: #000;
+}
+.step-pill--done .step-pill-num {
+  background: color-mix(in srgb, var(--sp) 20%, transparent);
+  color: var(--sp);
+}
+.step-pill--idle .step-pill-num {
+  background: var(--color-surface-2);
+  color: var(--color-text-3);
+}
+
+.step-pill-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+.step-pill--active .step-pill-label { color: var(--color-text); }
+.step-pill--done .step-pill-label { color: var(--color-text-2); }
+.step-pill--idle .step-pill-label { color: var(--color-text-3); }
+
+/* ── Step header ────────────────────────────────────────────────── */
+.step-header {
+  margin-bottom: 4px;
+  animation: fade-up 0.35s ease both;
+}
+
+/* ── Service cards (step 1) ─────────────────────────────────────── */
+.service-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface-1);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  animation: fade-up 0.35s ease both;
+  width: 100%;
+}
+.service-card:nth-child(1) { animation-delay: 0.05s; }
+.service-card:nth-child(2) { animation-delay: 0.1s; }
+.service-card:nth-child(3) { animation-delay: 0.15s; }
+.service-card:hover {
+  border-color: color-mix(in srgb, var(--sc, #3D7BFF) 40%, transparent);
+  background: color-mix(in srgb, var(--sc, #3D7BFF) 5%, var(--color-surface-1));
+}
+.service-card--active {
+  border-color: var(--sc);
+  background: color-mix(in srgb, var(--sc) 8%, var(--color-surface-1));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--sc) 20%, transparent);
+}
+
+.service-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--sc) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sc) 30%, transparent);
+  color: var(--sc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.service-card-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+}
+.service-card-check--active {
+  border-color: var(--sc, currentColor);
+  background: color-mix(in srgb, var(--sc, currentColor) 10%, transparent);
+}
+
+.svc-badge {
+  font-size: 10px;
+  font-family: var(--font-mono);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: 3px;
-  background: rgba(255,255,255,0.07);
-  color: var(--color-text-3);
+  border: 1px solid color-mix(in srgb, var(--sc) 35%, transparent);
+  background: color-mix(in srgb, var(--sc) 10%, transparent);
+  color: var(--sc);
 }
-.service-tab--active .tab-badge {
-  background: color-mix(in srgb, var(--tc) 15%, transparent);
-  color: var(--tc);
+
+/* ── Step navigation ────────────────────────────────────────────── */
+.step-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+
+.step-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border-strong);
+  background: transparent;
+  color: var(--color-text-2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.step-back:hover {
+  border-color: var(--color-text-3);
+  color: var(--color-text);
+  background: rgba(255,255,255,0.04);
 }
 
 /* ── Stickers ───────────────────────────────────────────────────── */
@@ -1012,35 +1252,6 @@ async function handleGenerate() {
 }
 .sticker:hover { box-shadow: 0 0 14px color-mix(in srgb, var(--sc) 40%, transparent); }
 
-/* ── Funnel steps ───────────────────────────────────────────────── */
-.funnel-step {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 4px;
-  border: 1.5px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.03);
-  transition: border-color 0.2s, background 0.2s;
-}
-.funnel-step--active {
-  border-color: rgba(61,123,255,0.35);
-  background: rgba(61,123,255,0.08);
-}
-.funnel-num {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--fs);
-  letter-spacing: 0.05em;
-}
-.funnel-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--color-text-2);
-}
-.funnel-step--active .funnel-label { color: var(--color-text); }
-
 /* ── Config cards ───────────────────────────────────────────────── */
 .config-card {
   position: relative;
@@ -1049,13 +1260,11 @@ async function handleGenerate() {
   border-radius: 12px;
   padding: 24px;
   overflow: hidden;
-  animation: fade-up 0.45s ease both;
+  animation: fade-up 0.35s ease both;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.config-card:nth-child(1) { animation-delay: 0.05s; }
-.config-card:nth-child(2) { animation-delay: 0.13s; }
-.config-card:nth-child(3) { animation-delay: 0.21s; }
-.config-card:nth-child(4) { animation-delay: 0.29s; }
+.config-card:nth-child(2) { animation-delay: 0.06s; }
+.config-card:nth-child(3) { animation-delay: 0.12s; }
 .config-card:hover {
   border-color: color-mix(in srgb, var(--cc) 40%, transparent);
 }
@@ -1176,7 +1385,6 @@ async function handleGenerate() {
   background: color-mix(in srgb, var(--mb) 14%, rgba(255,255,255,0.05));
   color: #fff;
 }
-
 .material-dot {
   width: 10px;
   height: 10px;
@@ -1235,7 +1443,6 @@ async function handleGenerate() {
   background: color-mix(in srgb, var(--fb) 14%, rgba(255,255,255,0.05));
   color: #fff;
 }
-
 .finish-icon {
   width: 32px;
   height: 32px;
@@ -1250,7 +1457,7 @@ async function handleGenerate() {
   border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
-  animation: fade-up 0.45s ease 0.25s both;
+  animation: fade-up 0.35s ease both;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .chat-card:hover {
@@ -1315,11 +1522,7 @@ async function handleGenerate() {
 .chat-messages::-webkit-scrollbar { width: 4px; }
 .chat-messages::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 4px; }
 
-.chat-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-}
+.chat-row { display: flex; align-items: flex-end; gap: 8px; }
 .chat-row--user { flex-direction: row-reverse; }
 
 .chat-bubble {
@@ -1341,13 +1544,7 @@ async function handleGenerate() {
   border-bottom-right-radius: 3px;
 }
 
-/* Typing indicator */
-.chat-typing {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 12px 16px;
-}
+.chat-typing { display: flex; align-items: center; gap: 5px; padding: 12px 16px; }
 .chat-typing span {
   display: inline-block;
   width: 6px;
@@ -1363,7 +1560,6 @@ async function handleGenerate() {
   30%           { transform: translateY(-5px); opacity: 1; }
 }
 
-/* Suggestion chips */
 .chat-suggestions {
   display: flex;
   flex-wrap: wrap;
@@ -1387,7 +1583,6 @@ async function handleGenerate() {
   background: rgba(61,123,255,0.12);
 }
 
-/* Input row */
 .chat-input-row {
   display: flex;
   gap: 8px;
@@ -1429,7 +1624,6 @@ async function handleGenerate() {
 .chat-send:hover:not(:disabled) { background: var(--color-accent-hover); transform: scale(1.05); }
 .chat-send:disabled { opacity: 0.35; cursor: not-allowed; }
 
-/* Message transition */
 .msg-enter-active { transition: opacity 0.3s ease, transform 0.3s ease; }
 .msg-enter-from   { opacity: 0; transform: translateY(8px); }
 
@@ -1441,7 +1635,7 @@ async function handleGenerate() {
   border-radius: 12px;
   padding: 24px;
   overflow: hidden;
-  animation: fade-up 0.45s ease 0.35s both;
+  animation: fade-up 0.35s ease 0.06s both;
 }
 
 .check-row {
@@ -1478,12 +1672,7 @@ async function handleGenerate() {
   border-radius: 12px;
   padding: 20px;
 }
-.est-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
+.est-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
 /* ── What's next card ───────────────────────────────────────────── */
 .next-card {
@@ -1515,6 +1704,16 @@ async function handleGenerate() {
   padding-top: 2px;
 }
 
+/* ── Step transition ────────────────────────────────────────────── */
+.step-enter-active,
+.step-leave-active { transition: opacity 0.2s ease, transform 0.2s ease; }
+.step-enter-from   { opacity: 0; transform: translateX(20px); }
+.step-leave-to     { opacity: 0; transform: translateX(-20px); }
+
+/* ── Preview transition ─────────────────────────────────────────── */
+.preview-enter-active, .preview-leave-active { transition: opacity 0.3s ease; }
+.preview-enter-from, .preview-leave-to { opacity: 0; }
+
 /* ── Keyframes ──────────────────────────────────────────────────── */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(16px); }
@@ -1525,19 +1724,14 @@ async function handleGenerate() {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ── Preview transition ─────────────────────────────────────────── */
-.preview-enter-active, .preview-leave-active { transition: opacity 0.3s ease; }
-.preview-enter-from, .preview-leave-to { opacity: 0; }
-
 /* ── Reduced motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .h-eyebrow, .h-eyebrow2, .h-title, .h-sub,
-  .h-funnel, .h-stickers, .h-service-tabs, .sticker,
-  .config-card, .cta-block, .chat-card { animation: none; }
+  .h-title, .h-sub, .sticker, .config-card, .cta-block, .chat-card,
+  .service-card, .step-header { animation: none; }
   .config-accent, .config-badge, .next-step,
-  .service-tab, .material-btn, .finish-btn,
-  .chip, .chat-send, .chat-input { transition: none; }
+  .material-btn, .finish-btn, .chip, .chat-send, .chat-input,
+  .step-pill, .service-card, .step-back { transition: none; }
   .chat-live-dot, .chat-typing span { animation: none; }
-  .msg-enter-active { transition: none; }
+  .msg-enter-active, .step-enter-active, .step-leave-active { transition: none; }
 }
 </style>
