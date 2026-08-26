@@ -21,10 +21,10 @@ const PORT = process.env.PORT ?? 3001
 // Security headers
 app.use(helmet())
 
-// CORS
+// CORS — FRONTEND_URL accepte plusieurs origines séparées par des virgules
 const allowedOrigins =
   process.env.NODE_ENV === 'production'
-    ? [process.env.FRONTEND_URL ?? 'https://blechesm.vercel.app']
+    ? (process.env.FRONTEND_URL ?? 'https://blechesm.vercel.app').split(',').map(s => s.trim())
     : ['http://localhost:5173']
 
 app.use(cors({ origin: allowedOrigins, credentials: true }))
