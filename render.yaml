@@ -5,7 +5,7 @@ services:
     region: frankfurt
     plan: free
     rootDir: backend
-    buildCommand: npm install --include=dev && npm run build && npx prisma migrate deploy
+    buildCommand: npm install --include=dev && npm run build && npx prisma migrate deploy && npx tsx prisma/seed.ts
     startCommand: node dist/index.js
     healthCheckPath: /api/health
     envVars:
