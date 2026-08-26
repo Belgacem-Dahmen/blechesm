@@ -13,4 +13,6 @@ async function main() {
   console.log('Seed OK — admin@demo.com / demo')
 }
 
-main().catch(console.error).finally(() => prisma.$disconnect())
+main()
+  .catch(e => { console.error('[SEED ERROR]', e); process.exit(1) })
+  .finally(() => prisma.$disconnect())
