@@ -4,12 +4,12 @@
 
 :root {
   /* Surfaces */
-  --bg:            #08090D;
-  --surface-1:     #0D1018;
-  --surface-2:     #131620;
-  --surface-3:     #191D29;
-  --border:        #1D2235;
-  --border-strong: #272D42;
+  --bg:            #141B2D;
+  --surface-1:     #1A2236;
+  --surface-2:     #202840;
+  --surface-3:     #263049;
+  --border:        #2A3250;
+  --border-strong: #343D5E;
 
   /* Accent */
   --accent:        #3D7BFF;
@@ -22,7 +22,7 @@
   --accent-warm-soft: rgba(255, 107, 53, 0.12);
 
   /* Hero gradient — deep navy (NOT purple) */
-  --gradient-hero: linear-gradient(160deg, #080B14 0%, #0D1120 60%, #111827 100%);
+  --gradient-hero: linear-gradient(160deg, #141B2D 0%, #1A2236 60%, #202840 100%);
 
   /* Texte */
   --text:          #FFFFFF;
