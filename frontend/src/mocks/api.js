@@ -156,3 +156,7 @@ export async function getAdminAccounts() {
 export async function createAdminAccount(data) {
   return api.post('/api/accounts', data)
 }
+
+export async function deleteAdminAccount(id) {
+  return api.delete(`/api/accounts/${id}`)
+}

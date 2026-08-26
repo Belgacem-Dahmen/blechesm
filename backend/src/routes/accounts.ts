@@ -46,4 +46,24 @@ router.post('/', validate(CreateAccountSchema), async (req: Request, res: Respon
   }
 })
 
+router.delete('/:id', async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params
+
+    if (id === req.admin!.adminId) {
+      throw new AppError('FORBIDDEN', 403, 'Vous ne pouvez pas supprimer votre propre compte')
+    }
+
+    const count = await prisma.admin.count()
+    if (count <= 1) {
+      throw new AppError('FORBIDDEN', 403, 'Impossible de supprimer le dernier compte admin')
+    }
+
+    await prisma.admin.delete({ where: { id } })
+    res.json({ data: { success: true } })
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default router

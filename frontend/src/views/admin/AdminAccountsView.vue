@@ -32,6 +32,14 @@
             <BaseBadge status="neutral">{{ account.role }}</BaseBadge>
             <p class="text-text-3 text-xs mt-1">Depuis {{ formatDate(account.createdAt) }}</p>
           </div>
+          <button
+            v-if="account.id !== authStore.currentUser?.id"
+            @click="handleDelete(account)"
+            :disabled="deletingId === account.id"
+            class="w-8 h-8 flex items-center justify-center rounded-sm text-text-3 hover:text-red-400 hover:bg-surface-2 transition-colors disabled:opacity-40"
+          >
+            <Trash2 class="w-4 h-4" />
+          </button>
         </div>
       </div>
 
@@ -72,18 +80,21 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { Plus, X } from 'lucide-vue-next'
-import { getAdminAccounts, createAdminAccount } from '@/mocks/api.js'
+import { Plus, X, Trash2 } from 'lucide-vue-next'
+import { getAdminAccounts, createAdminAccount, deleteAdminAccount } from '@/mocks/api.js'
+import { useAuthStore } from '@/stores/auth.js'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseBadge from '@/components/ui/BaseBadge.vue'
 import LoadingState from '@/components/ui/LoadingState.vue'
 
+const authStore = useAuthStore()
 const accounts = ref([])
 const loading = ref(true)
 const showModal = ref(false)
 const saving = ref(false)
+const deletingId = ref(null)
 const form = reactive({ name: '', email: '', password: '' })
 const errors = reactive({ name: '', email: '', password: '' })
 const apiError = ref('')
@@ -119,6 +130,19 @@ async function handleCreate() {
     }
   } finally {
     saving.value = false
+  }
+}
+
+async function handleDelete(account) {
+  if (!confirm(`Supprimer le compte de ${account.name} ?`)) return
+  deletingId.value = account.id
+  try {
+    await deleteAdminAccount(account.id)
+    accounts.value = accounts.value.filter(a => a.id !== account.id)
+  } catch (err) {
+    alert(err.message ?? 'Erreur lors de la suppression.')
+  } finally {
+    deletingId.value = null
   }
 }
 
