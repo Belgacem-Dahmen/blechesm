@@ -11,8 +11,8 @@
         </BaseButton>
       </div>
 
-      <div v-if="loading" class="flex justify-center py-12">
-        <LoadingState label="Chargement des comptes…" />
+      <div v-if="loading" class="flex justify-center py-16">
+        <BlechEsmLoader size="64px" label="Chargement…" />
       </div>
 
       <div v-else class="bg-surface-1 border border-border rounded-lg overflow-hidden">
@@ -88,7 +88,7 @@ import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseBadge from '@/components/ui/BaseBadge.vue'
-import LoadingState from '@/components/ui/LoadingState.vue'
+import BlechEsmLoader from '@/components/ui/BlechEsmLoader.vue'
 
 const authStore = useAuthStore()
 const { ask } = useConfirm()
