@@ -24,7 +24,7 @@
             <h1 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightest leading-[0.92] mb-4 h-title">
               Configurateur IA<br />
               <span class="relative inline-block text-accent">
-                en 4 étapes
+                en 5 étapes
                 <svg class="absolute -bottom-1 left-0 w-full" height="8" viewBox="0 0 400 8" preserveAspectRatio="none" fill="none" aria-hidden="true">
                   <path d="M0,4 Q50,0 100,4 Q150,8 200,4 Q250,0 300,4 Q350,8 400,4" stroke="#FF6B35" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
                 </svg>
@@ -593,12 +593,159 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-                  <BaseButton size="lg" :loading="loading" :disabled="!chatDone" class="w-full sm:w-auto" @click="handleGenerate">
+                  <BaseButton size="lg" :disabled="!chatDone" class="w-full sm:w-auto" @click="nextStep">
+                    Continuer
+                    <ChevronRight class="w-4 h-4" />
+                  </BaseButton>
+                  <div>
+                    <p class="text-text-3 text-xs font-mono">🔒 Vos coordonnées ensuite</p>
+                    <p class="text-text-3 text-xs">Gratuit · Sans engagement</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nav -->
+            <div class="step-nav">
+              <button class="step-back" @click="prevStep">
+                <ChevronLeft class="w-4 h-4" />
+                Retour
+              </button>
+            </div>
+          </div>
+          </Transition>
+
+          <!-- ══ STEP 5 — Contact + Budget + Generate ══════════════════ -->
+          <Transition name="step" mode="out-in">
+          <div v-if="currentStep === 5" key="step5" class="space-y-4">
+            <div class="step-header">
+              <h2 class="font-display text-2xl font-semibold text-text">Vos coordonnées</h2>
+              <p class="text-text-3 text-sm mt-1">Pour vous envoyer votre visualisation et le devis personnalisé</p>
+            </div>
+
+            <!-- Contact card -->
+            <div class="config-card" style="--cc: #F472B6">
+              <div class="config-accent" />
+              <div class="flex items-start gap-4 mb-5">
+                <div class="config-badge" :class="(store.contact.name && store.contact.email && store.contact.phone) ? 'config-badge--done' : 'config-badge--active'">
+                  <Check v-if="store.contact.name && store.contact.email && store.contact.phone" class="w-4 h-4" />
+                  <span v-else>01</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap mb-1">
+                    <h3 class="font-display font-semibold text-text">Informations de contact</h3>
+                    <span class="req-badge req-badge--required">Requis</span>
+                  </div>
+                  <p class="text-text-3 text-xs">Nos artistes vous répondent sous 48h avec votre devis</p>
+                </div>
+              </div>
+
+              <div class="space-y-4">
+                <BaseInput
+                  v-model="store.contact.name"
+                  label="Nom complet"
+                  placeholder="Marie Ben Salem"
+                  required
+                  :error="errors.name"
+                >
+                  <template #prefix><User class="w-4 h-4 text-text-3" /></template>
+                </BaseInput>
+
+                <BaseInput
+                  v-model="store.contact.email"
+                  type="email"
+                  label="Email"
+                  placeholder="marie@exemple.tn"
+                  required
+                  :error="errors.email"
+                >
+                  <template #prefix><Mail class="w-4 h-4 text-text-3" /></template>
+                </BaseInput>
+
+                <BaseInput
+                  v-model="store.contact.phone"
+                  type="tel"
+                  label="Téléphone"
+                  placeholder="+216 XX XXX XXX"
+                  required
+                  :error="errors.phone"
+                >
+                  <template #prefix><Phone class="w-4 h-4 text-text-3" /></template>
+                </BaseInput>
+              </div>
+            </div>
+
+            <!-- Budget card -->
+            <div class="config-card" :class="store.contact.budget ? 'config-card--done' : ''" style="--cc: #FBBF24">
+              <div class="config-accent" />
+              <div class="flex items-start gap-4 mb-5">
+                <div class="config-badge" :class="store.contact.budget ? 'config-badge--done' : 'config-badge--idle'">
+                  <Check v-if="store.contact.budget" class="w-4 h-4" />
+                  <span v-else>02</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap mb-1">
+                    <h3 class="font-display font-semibold text-text">Budget alloué</h3>
+                    <span class="req-badge req-badge--required">Requis</span>
+                  </div>
+                  <p class="text-text-3 text-xs">Permet à nos artistes de vous proposer la solution la plus adaptée</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <button
+                  v-for="opt in budgetOptions"
+                  :key="opt"
+                  type="button"
+                  class="budget-btn"
+                  :class="store.contact.budget === opt ? 'budget-btn--active' : ''"
+                  @click="store.contact.budget = opt; errors.budget = ''"
+                >
+                  <Wallet class="w-3.5 h-3.5 shrink-0 opacity-60" />
+                  <span class="text-sm font-medium font-mono">{{ opt }}</span>
+                </button>
+              </div>
+              <p v-if="errors.budget" class="mt-3 text-xs text-error font-mono flex items-center gap-1.5">
+                <span class="w-1 h-1 rounded-full bg-error" />
+                {{ errors.budget }}
+              </p>
+            </div>
+
+            <!-- CTA Generate -->
+            <div class="cta-block">
+              <div class="absolute -top-8 right-8 w-48 h-48 rounded-full pointer-events-none"
+                style="background:#F472B6; filter:blur(70px); opacity:0.07;" />
+              <div class="relative z-10">
+                <p class="font-mono text-[11px] font-bold uppercase tracking-widest text-text-3 mb-4">Prêt à générer</p>
+                <div class="flex flex-wrap gap-x-6 gap-y-2 mb-5">
+                  <div class="check-row check-row--done">
+                    <CheckCircle2 class="w-3.5 h-3.5" />
+                    Service : {{ currentService.label }}
+                  </div>
+                  <div class="check-row" :class="chatDone ? 'check-row--done' : ''">
+                    <CheckCircle2 v-if="chatDone" class="w-3.5 h-3.5" />
+                    <Circle v-else class="w-3.5 h-3.5" />
+                    Description IA
+                  </div>
+                  <div class="check-row" :class="store.contact.email ? 'check-row--done' : ''">
+                    <CheckCircle2 v-if="store.contact.email" class="w-3.5 h-3.5" />
+                    <Circle v-else class="w-3.5 h-3.5" />
+                    Coordonnées
+                  </div>
+                  <div class="check-row" :class="store.contact.budget ? 'check-row--done' : ''">
+                    <CheckCircle2 v-if="store.contact.budget" class="w-3.5 h-3.5" />
+                    <Circle v-else class="w-3.5 h-3.5" />
+                    Budget
+                  </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                  <BaseButton size="lg" :loading="loading" class="w-full sm:w-auto" @click="validateAndLaunch">
                     <Sparkles class="w-4 h-4" />
                     {{ currentService.cta }}
                   </BaseButton>
                   <div>
-                    <p class="text-text-3 text-xs font-mono">⚡ Résultat en ~2 secondes</p>
+                    <p class="text-text-3 text-xs font-mono">⚡ Résultat en 30–60 sec</p>
                     <p class="text-text-3 text-xs">Gratuit · Sans engagement</p>
                   </div>
                 </div>
@@ -714,32 +861,56 @@ import { useRouter, useRoute } from 'vue-router'
 import {
   ChevronRight, ChevronLeft, Check, CheckCircle2, Circle,
   Sparkles, Lightbulb, ImageIcon, Eye, FileText,
-  Sun, Maximize2, AlignLeft, PenLine, Layers, Grid3x3,
+  Sun, Maximize2, AlignLeft, PenLine, Layers, Grid3x3, User, Mail, Phone, Wallet,
 } from 'lucide-vue-next'
 import { useRequestStore } from '@/stores/request.js'
-import { generateFresco } from '@/mocks/api.js'
+import { generateFresco, submitQuote } from '@/mocks/api.js'
 import NavBar from '@/components/layout/NavBar.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import BaseInput from '@/components/ui/BaseInput.vue'
 import FileDropzone from '@/components/ui/FileDropzone.vue'
 
 const store = useRequestStore()
 const router = useRouter()
 const route = useRoute()
 const loading = ref(false)
-const errors = reactive({ wall: '' })
+const errors = reactive({ wall: '', name: '', email: '', phone: '', budget: '' })
 const thickness = ref(60)
 const contrast = ref(70)
 
 // ── Wizard step state ──────────────────────────────────────────────
 const currentStep = ref(1)
-const totalSteps = 4
+const totalSteps = 5
 
 const wizardSteps = [
-  { label: 'Service',     color: '#FB923C' },
-  { label: 'Photos',      color: '#3D7BFF' },
-  { label: 'Options',     color: '#A78BFA' },
-  { label: 'Description', color: '#4ADE80' },
+  { label: 'Service',      color: '#FB923C' },
+  { label: 'Photos',       color: '#3D7BFF' },
+  { label: 'Options',      color: '#A78BFA' },
+  { label: 'Description',  color: '#4ADE80' },
+  { label: 'Coordonnées',  color: '#F472B6' },
 ]
+
+const budgetOptions = [
+  '< 500 DT',
+  '500 – 1 000 DT',
+  '1 000 – 3 000 DT',
+  '3 000 – 5 000 DT',
+  '> 5 000 DT',
+]
+
+function validateAndNextContact() {
+  errors.name   = ''
+  errors.email  = ''
+  errors.phone  = ''
+  errors.budget = ''
+  let valid = true
+  if (!store.contact.name.trim())  { errors.name   = 'Nom requis'; valid = false }
+  if (!store.contact.email.trim()) { errors.email  = 'Email requis'; valid = false }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(store.contact.email)) { errors.email = 'Email invalide'; valid = false }
+  if (!store.contact.phone.trim()) { errors.phone  = 'Téléphone requis'; valid = false }
+  if (!store.contact.budget)       { errors.budget = 'Sélectionnez un budget'; valid = false }
+  if (valid) nextStep()
+}
 
 function goToStep(n) {
   if (n < currentStep.value) currentStep.value = n
@@ -1028,11 +1199,37 @@ watch(() => route.query.service, (newService) => {
 })
 
 // ── Generate ───────────────────────────────────────────────────────
-async function handleGenerate() {
+async function validateAndLaunch() {
+  errors.name   = ''
+  errors.email  = ''
+  errors.phone  = ''
+  errors.budget = ''
+  let valid = true
+  if (!store.contact.name.trim())  { errors.name   = 'Nom requis'; valid = false }
+  if (!store.contact.email.trim()) { errors.email  = 'Email requis'; valid = false }
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(store.contact.email)) { errors.email = 'Email invalide'; valid = false }
+  if (!store.contact.phone.trim()) { errors.phone  = 'Téléphone requis'; valid = false }
+  if (!store.contact.budget)       { errors.budget = 'Sélectionnez un budget'; valid = false }
+  if (!valid) return
+
   loading.value = true
   try {
     const url = await generateFresco(store.wallPhoto ?? store.referencePhoto, store.referencePhoto, store.description, store.serviceType)
     store.setGeneratedImage(url)
+
+    // Soumettre la demande de devis automatiquement
+    const res = await submitQuote({
+      ...store.dimensions,
+      ...store.contact,
+      serviceType: store.serviceType,
+      description: store.description,
+      wallPhoto: store.wallPhoto,
+      referencePhoto: store.referencePhoto,
+      generatedImage: url,
+    })
+    store.submitted = true
+    store.requestId = res?.id ?? null
+
     router.push('/resultat')
   } catch (e) {
     console.error(e)
@@ -1392,6 +1589,30 @@ async function handleGenerate() {
   flex-shrink: 0;
 }
 
+/* ── Budget buttons ─────────────────────────────────────────────── */
+.budget-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border-strong);
+  background: var(--color-surface-2);
+  color: var(--color-text-2);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  text-align: left;
+}
+.budget-btn:hover {
+  border-color: rgba(244,114,182,0.45);
+  color: #fff;
+}
+.budget-btn--active {
+  border-color: #F472B6;
+  background: rgba(244,114,182,0.1);
+  color: #fff;
+}
+
 /* ── Range sliders ──────────────────────────────────────────────── */
 .slider {
   width: 100%;
@@ -1719,7 +1940,7 @@ async function handleGenerate() {
   .h-title, .h-sub, .sticker, .config-card, .cta-block, .chat-card,
   .service-card, .step-header { animation: none; }
   .config-accent, .config-badge, .next-step,
-  .material-btn, .finish-btn, .chip, .chat-send, .chat-input,
+  .material-btn, .finish-btn, .budget-btn, .chip, .chat-send, .chat-input,
   .step-pill, .service-card, .step-back { transition: none; }
   .chat-live-dot, .chat-typing span { animation: none; }
   .msg-enter-active, .step-enter-active, .step-leave-active { transition: none; }

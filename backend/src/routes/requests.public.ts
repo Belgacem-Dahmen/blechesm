@@ -9,17 +9,18 @@ import { sendRequestConfirmation, sendAdminNotification } from '../services/emai
 const router = Router()
 
 const SubmitSchema = z.object({
-  name: z.string().min(1, 'Nom requis'),
+  name: z.string().min(2, 'Nom requis (min. 2 caractères)'),
   email: z.string().email('Email invalide'),
-  phone: z.string().optional(),
+  phone: z.string().min(8, 'Numéro de téléphone requis'),
   city: z.string().optional(),
+  budget: z.string().optional(),
   serviceType: z.enum(['mural', 'sculpture', 'sol']),
   description: z.string().min(10, 'Description trop courte'),
   width: z.coerce.number().positive().optional(),
   height: z.coerce.number().positive().optional(),
   materialStyle: z.string().optional(),
   surfaceFinish: z.string().optional(),
-  generatedImage: z.string().optional(), // URL de l'image générée par l'IA
+  generatedImage: z.string().optional(),
 })
 
 router.post(
@@ -77,6 +78,7 @@ router.post(
           wallHeight: data.height,
           materialStyle: data.materialStyle,
           surfaceFinish: data.surfaceFinish,
+          budget: data.budget,
           wallPhotoUrl,
           referencePhotoUrl,
           generatedImageUrl: data.generatedImage,
