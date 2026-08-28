@@ -3,7 +3,7 @@
 
     <!-- ── LOADING ──────────────────────────────────────────────────── -->
     <div v-if="loading" class="flex justify-center py-20">
-      <LoadingState label="Chargement de la demande…" />
+      <BlechEsmLoader size="64px" label="Chargement…" />
     </div>
 
     <!-- ── NOT FOUND ─────────────────────────────────────────────────── -->
@@ -320,7 +320,7 @@ import {
 import { getRequest, updateRequest, sendMessage } from '@/mocks/api.js'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
-import LoadingState from '@/components/ui/LoadingState.vue'
+import BlechEsmLoader from '@/components/ui/BlechEsmLoader.vue'
 
 const route = useRoute()
 const request = ref(null)
@@ -374,7 +374,7 @@ async function handleSave() {
   try {
     const updated = await updateRequest(route.params.id, {
       status: editable.status,
-      finalPrice: editable.finalPrice ? Number(editable.finalPrice) : null,
+      ...(editable.finalPrice !== '' ? { finalPrice: Number(editable.finalPrice) } : {}),
       internalNotes: editable.internalNotes,
     })
     request.value = updated
