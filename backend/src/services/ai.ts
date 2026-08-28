@@ -1,6 +1,6 @@
 import { uploadImage } from './storage'
 
-const GEMINI_MODEL = 'gemini-2.0-flash-preview-image-generation'
+const GEMINI_MODEL = 'gemini-2.5-flash-image'
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`
 
 const PLACEHOLDERS = [
