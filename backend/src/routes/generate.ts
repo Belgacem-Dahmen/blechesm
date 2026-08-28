@@ -26,15 +26,15 @@ router.post(
 
       const files = req.files as Record<string, Express.Multer.File[]> | undefined
 
-      const wallPhotoUrl = files?.wallPhoto?.[0]
-        ? await uploadImage(files.wallPhoto[0].buffer, 'blechesm/walls')
-        : undefined
-      const refPhotoUrl = files?.refPhoto?.[0]
-        ? await uploadImage(files.refPhoto[0].buffer, 'blechesm/refs')
-        : undefined
+      const wallPhotoBuffer = files?.wallPhoto?.[0]?.buffer
+      const refPhotoBuffer = files?.refPhoto?.[0]?.buffer
+
+      // Upload originals to Cloudinary for storage (non-blocking for generation)
+      if (wallPhotoBuffer) uploadImage(wallPhotoBuffer, 'blechesm/walls').catch(() => {})
+      if (refPhotoBuffer) uploadImage(refPhotoBuffer, 'blechesm/refs').catch(() => {})
 
       const jobId = crypto.randomUUID()
-      enqueueJob({ jobId, wallPhotoUrl, refPhotoUrl, ...parsed.data })
+      enqueueJob({ jobId, wallPhotoBuffer, refPhotoBuffer, ...parsed.data })
 
       res.status(202).json({ data: { jobId, status: 'pending' } })
     } catch (err) {

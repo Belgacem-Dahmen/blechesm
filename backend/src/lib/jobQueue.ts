@@ -15,8 +15,8 @@ export function getJob(jobId: string): Job | undefined {
 
 export function enqueueJob(opts: {
   jobId: string
-  wallPhotoUrl?: string
-  refPhotoUrl?: string
+  wallPhotoBuffer?: Buffer
+  refPhotoBuffer?: Buffer
   description: string
   serviceType: string
 }): void {
@@ -29,15 +29,15 @@ export function enqueueJob(opts: {
 
 async function processJob(opts: {
   jobId: string
-  wallPhotoUrl?: string
-  refPhotoUrl?: string
+  wallPhotoBuffer?: Buffer
+  refPhotoBuffer?: Buffer
   description: string
   serviceType: string
 }): Promise<void> {
   jobs.set(opts.jobId, { status: 'processing', createdAt: Date.now() })
   const url = await generateImage({
-    wallPhotoUrl: opts.wallPhotoUrl,
-    refPhotoUrl: opts.refPhotoUrl,
+    wallPhotoBuffer: opts.wallPhotoBuffer,
+    refPhotoBuffer: opts.refPhotoBuffer,
     description: opts.description,
     serviceType: opts.serviceType,
   })
