@@ -10,32 +10,27 @@ const PLACEHOLDERS = [
 ]
 
 function buildMuralPlacementPrompt(description: string, serviceType: string): string {
-  return `You are a professional architectural visualization specialist.
+  return `Use Image 1 as the exact base photograph and physical environment. Use Image 2 only as the visual reference for the mural artwork, composition, characters and graphic style.
 
-Your task is to realistically apply a provided artwork onto a real wall.
+Create a photorealistic mural mockup by applying the artwork from Image 2 directly onto the large textured wall visible in Image 1.
 
-IMAGE 1: Real photograph of the wall.
-IMAGE 2: Artwork that must be applied.
+IMPORTANT: preserve the original architecture, geometry and camera perspective of Image 1 exactly. Do not change the camera position, focal length, wall dimensions, ceiling, floor, doors, windows, electrical outlets, cables, furniture or room proportions.
 
-RULES:
-1. Preserve the original photograph.
-2. Preserve the wall geometry.
-3. Preserve doors and windows.
-4. Preserve furniture and objects.
-5. Do not modify the camera perspective.
-6. Do not redesign the artwork.
-7. Preserve artwork composition and colors.
-8. Adapt the artwork to the wall perspective.
-9. Respect the wall boundaries.
-10. Respect realistic lighting.
-11. Integrate the artwork with the wall texture.
-12. The result must look like a real photograph.
+The mural must follow the real perspective and vanishing points of the wall in Image 1. Treat the wall as a real 3D surface and project/map the artwork onto that surface, rather than placing a flat rectangular image in front of the camera.
 
-Do not generate a different mural.
-Do not invent additional elements.
-Do not alter the architecture.
+The artwork must naturally conform to the wall's perspective, including the wall's horizontal convergence and depth. The mural should visually extend across the entire usable wall surface from the foreground to the background.
 
-The primary objective is realistic mural placement, not artistic reinterpretation.
+Preserve the wall's existing physical texture and imperfections. The artwork should look like a professionally printed and installed large-format wall mural, with realistic adhesion to the wall surface, subtle texture interaction and natural lighting.
+
+Do not copy the room, furniture, lighting or LED setup from Image 2. Image 2 is ONLY a reference for the artwork itself.
+
+Keep the original viewpoint of Image 1 so that the result can be presented to a client as a realistic architectural visualization of the finished mural installation.
+
+The final result must look like a real photograph of Image 1 after the mural has actually been installed, not an AI-generated room and not a pasted image.
+
+No floating artwork, no rectangular poster effect, no artificial frame, no distortion of the room, no change of perspective, no additional furniture, no new objects.
+
+The mural must be dimensionally believable and installation-ready.
 
 Additional context: ${description}
 Service type: ${serviceType}.`
