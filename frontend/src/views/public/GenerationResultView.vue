@@ -123,18 +123,18 @@
                 </h1>
 
                 <p class="text-text-2 text-base leading-relaxed mb-8 max-w-lg h-sub">
-                  Comparez l'avant et l'après. Si le rendu vous convient, demandez votre devis — nos artistes vous répondent sous 48h.
+                  Comparez l'avant et l'après. Votre demande de devis a été envoyée — nos artistes vous contactent sous 48h.
                 </p>
 
-                <!-- Funnel — step 02 active -->
+                <!-- Funnel — all done -->
                 <div class="flex items-center gap-0 h-funnel">
                   <div v-for="(step, i) in funnelSteps" :key="i" class="flex items-center">
                     <div class="funnel-step" :style="{ '--fs': step.color }"
                       :class="{
-                        'funnel-step--done':   i < 1,
-                        'funnel-step--active': i === 1,
+                        'funnel-step--done':   i < 2,
+                        'funnel-step--active': i === 2,
                       }">
-                      <Check v-if="i < 1" class="w-3 h-3 shrink-0" style="color:#4ADE80" />
+                      <Check v-if="i < 2" class="w-3 h-3 shrink-0" style="color:#4ADE80" />
                       <span v-else class="funnel-num">{{ String(i+1).padStart(2,'0') }}</span>
                       <span class="funnel-label">{{ step.label }}</span>
                     </div>
@@ -222,34 +222,31 @@
             <!-- ── RIGHT: SIDEBAR ──────────────────────────────────── -->
             <div class="lg:col-span-2 space-y-4 lg:sticky lg:top-24">
 
-              <!-- CTA card -->
+              <!-- Confirmation card -->
               <div class="cta-block">
                 <div class="absolute -top-8 right-8 w-48 h-48 rounded-full pointer-events-none"
                   style="background:#4ADE80; filter:blur(70px); opacity:0.07;" />
                 <div class="relative z-10">
-                  <div class="flex items-center gap-3 mb-5">
-                    <div class="w-9 h-9 rounded-full bg-success flex items-center justify-center shrink-0">
-                      <Check class="w-4 h-4 text-bg" />
-                    </div>
-                    <div>
-                      <p class="font-display font-semibold text-text text-sm">Fresque générée</p>
-                      <p class="text-text-3 text-xs font-mono">⚡ Générée par Gemini</p>
-                    </div>
+                  <!-- Sent badge -->
+                  <div class="inline-block mb-4 px-3 py-1 border-2 border-success/40 text-success rounded font-mono text-[10px] font-bold uppercase tracking-widest"
+                    style="background: rgba(74,222,128,0.07); transform: rotate(-1deg)">
+                    Demande envoyée ✓
                   </div>
+
+                  <p class="font-display font-semibold text-text text-sm mb-1">Nos artistes vous contactent sous 48h</p>
+                  <p class="text-text-3 text-xs mb-5 leading-relaxed">
+                    Votre demande a bien été reçue.
+                    <span v-if="store.contact.email"> Nous vous répondrons à <strong class="text-text">{{ store.contact.email }}</strong>.</span>
+                  </p>
+
                   <div class="flex flex-col gap-2.5">
-                    <RouterLink to="/devis" class="block">
-                      <BaseButton size="lg" class="w-full">
-                        Demander un devis →
-                      </BaseButton>
-                    </RouterLink>
                     <BaseButton variant="ghost" size="md" class="w-full" @click="regenerate" :loading="regenerating">
                       <RefreshCw class="w-3.5 h-3.5" />
-                      Régénérer
+                      Régénérer une variante
                     </BaseButton>
-                    <RouterLink to="/configurateur" class="block">
+                    <RouterLink to="/" class="block">
                       <BaseButton variant="secondary" size="md" class="w-full">
-                        <Settings class="w-3.5 h-3.5" />
-                        Modifier les paramètres
+                        Retour à l'accueil
                       </BaseButton>
                     </RouterLink>
                   </div>
@@ -296,24 +293,30 @@
                 </div>
               </div>
 
-              <!-- Next step card -->
+              <!-- Contact recap card -->
               <div class="next-card">
                 <div class="flex items-center gap-2 mb-4">
-                  <span class="w-4 h-px bg-accent" />
-                  <p class="font-mono text-[11px] font-bold uppercase tracking-widest text-accent">Étape suivante</p>
+                  <span class="w-4 h-px bg-success" />
+                  <p class="font-mono text-[11px] font-bold uppercase tracking-widest text-success">Votre dossier</p>
                 </div>
-                <div class="next-step" style="--ns: #4ADE80">
-                  <div class="next-step-num">03</div>
-                  <div class="flex-1 min-w-0">
-                    <p class="font-display font-semibold text-text text-sm leading-tight">Recevoir votre devis</p>
-                    <p class="text-text-3 text-xs mt-0.5 leading-relaxed">Renseignez les dimensions et vos coordonnées. Nos artistes vous répondent sous 48h.</p>
+                <div class="space-y-2.5 text-xs">
+                  <div v-if="store.contact.name" class="flex items-center justify-between">
+                    <span class="text-text-3 font-mono uppercase tracking-wider">Nom</span>
+                    <span class="text-text font-medium">{{ store.contact.name }}</span>
                   </div>
-                  <FileText class="w-4 h-4 shrink-0 opacity-60 text-success" />
+                  <div v-if="store.contact.email" class="flex items-center justify-between">
+                    <span class="text-text-3 font-mono uppercase tracking-wider">Email</span>
+                    <span class="text-text font-medium">{{ store.contact.email }}</span>
+                  </div>
+                  <div v-if="store.contact.phone" class="flex items-center justify-between">
+                    <span class="text-text-3 font-mono uppercase tracking-wider">Téléphone</span>
+                    <span class="text-text font-medium">{{ store.contact.phone }}</span>
+                  </div>
+                  <div v-if="store.contact.budget" class="flex items-center justify-between">
+                    <span class="text-text-3 font-mono uppercase tracking-wider">Budget</span>
+                    <span class="text-accent font-mono font-semibold">{{ store.contact.budget }}</span>
+                  </div>
                 </div>
-                <RouterLink to="/devis" class="mt-4 flex items-center gap-1.5 text-accent text-xs font-medium hover:underline">
-                  Accéder au formulaire de devis
-                  <ChevronRight class="w-3.5 h-3.5" />
-                </RouterLink>
               </div>
 
             </div>
@@ -341,7 +344,7 @@
 import { ref, onMounted } from 'vue'
 import {
   ChevronRight, Check, CheckCircle2, Circle,
-  Sparkles, ImageIcon, RefreshCw, Settings, FileText, AlertTriangle,
+  Sparkles, ImageIcon, RefreshCw, Settings, AlertTriangle,
 } from 'lucide-vue-next'
 import { useRequestStore } from '@/stores/request.js'
 import { generateFresco } from '@/mocks/api.js'

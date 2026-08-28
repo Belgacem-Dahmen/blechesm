@@ -12,7 +12,9 @@ export const useRequestStore = defineStore('request', () => {
   const dimensions = ref({ width: '', height: '' })
   const materialStyle = ref('marble')  // sculpture: clay | marble | metal | concrete | neon
   const surfaceFinish = ref('mat')     // sol: mat | brillant | metallique
-  const contact = ref({ name: '', email: '', phone: '', city: '' })
+  const contact = ref({ name: '', email: '', phone: '', city: '', budget: '' })
+  const submitted = ref(false)
+  const requestId = ref(null)
 
   function setWallPhoto(file) {
     wallPhoto.value = file
@@ -38,7 +40,9 @@ export const useRequestStore = defineStore('request', () => {
     dimensions.value = { width: '', height: '' }
     materialStyle.value = 'marble'
     surfaceFinish.value = 'mat'
-    contact.value = { name: '', email: '', phone: '', city: '' }
+    contact.value = { name: '', email: '', phone: '', city: '', budget: '' }
+    submitted.value = false
+    requestId.value = null
   }
 
   return {
@@ -48,6 +52,7 @@ export const useRequestStore = defineStore('request', () => {
     description, generatedImage,
     dimensions, materialStyle, surfaceFinish,
     contact,
+    submitted, requestId,
     setWallPhoto, setReferencePhoto, setGeneratedImage, reset,
   }
 })

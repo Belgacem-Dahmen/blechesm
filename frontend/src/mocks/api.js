@@ -20,6 +20,7 @@ function toRequest(r) {
     wallPhoto:      r.wallPhotoUrl      ?? null,
     referencePhoto: r.referencePhotoUrl ?? null,
     generatedImage: r.generatedImageUrl ?? null,
+    budget:         r.budget            ?? null,
     finalPrice:     r.finalPrice,
     internalNotes:  r.internalNotes,
     messages:       r.messages ?? [],
@@ -84,6 +85,10 @@ export async function updateRequest(id, patch) {
   return toRequest(await api.patch(`/api/requests/${id}`, patch))
 }
 
+export async function sendMessage(id, content) {
+  return api.post(`/api/requests/${id}/messages`, { content })
+}
+
 export async function submitQuote(data) {
   const fd = new FormData()
 
@@ -91,6 +96,7 @@ export async function submitQuote(data) {
   fd.append('email',       data.email       ?? '')
   fd.append('phone',       data.phone       ?? '')
   fd.append('city',        data.city        ?? '')
+  if (data.budget) fd.append('budget', data.budget)
   fd.append('serviceType', data.serviceType ?? 'mural')
   fd.append('description', data.description ?? '')
   if (data.width)  fd.append('width',  String(data.width))

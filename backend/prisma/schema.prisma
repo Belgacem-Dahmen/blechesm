@@ -49,6 +49,7 @@ model Request {
   referencePhotoUrl String?
   generatedImageUrl String?
 
+  budget         String?
   finalPrice     Float?
   internalNotes  String  @default("")
   idempotencyKey String?
