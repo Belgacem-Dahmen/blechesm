@@ -121,19 +121,6 @@ Le build command : `npm run build` exécute `prisma generate && tsc` — le clie
 
 ---
 
-## Compte admin par défaut
-
-Après le seed :
-
-```
-Email    : admin@demo.com
-Password : demo
-```
-
-> Changer le mot de passe en production via l'espace admin `/admin/comptes`.
-
----
-
 ## Fonctionnalités
 
 ### Espace public
