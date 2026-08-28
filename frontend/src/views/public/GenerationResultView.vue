@@ -30,7 +30,7 @@
           <div class="w-full bg-surface-2 rounded-full h-1.5 mb-2 overflow-hidden">
             <div class="h-full bg-accent rounded-full loading-bar" />
           </div>
-          <p class="text-text-3 text-xs font-mono">⚡ Environ 2–3 secondes</p>
+          <p class="text-text-3 text-xs font-mono">⏳ Peut prendre 30–60 secondes</p>
 
           <!-- Tips -->
           <div class="mt-10 p-5 bg-surface-1 border border-border rounded-xl text-left space-y-3">
@@ -39,6 +39,45 @@
               <CheckCircle2 class="w-3.5 h-3.5 text-accent mt-0.5 shrink-0" />
               <span class="text-text-2 text-xs leading-relaxed">{{ tip }}</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ERROR STATE ─────────────────────────────────────────────── -->
+      <div v-else-if="generationError" key="error" class="min-h-screen flex flex-col items-center justify-center px-4 pt-16 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style="background:#FF6B35; filter:blur(120px); opacity:0.05;" />
+
+        <div class="relative w-full max-w-sm text-center z-10">
+          <div class="w-16 h-16 rounded-xl bg-surface-2 border border-border-strong flex items-center justify-center mx-auto mb-6">
+            <AlertTriangle class="w-7 h-7 text-warning opacity-80" />
+          </div>
+
+          <div class="inline-block mb-4 px-3 py-1 border-2 border-warning/40 text-warning rounded font-mono text-[10px] font-bold uppercase tracking-widest"
+            style="background: rgba(246,184,78,0.07); transform: rotate(-1deg)">
+            Génération échouée
+          </div>
+
+          <h2 class="font-display font-semibold text-text text-2xl mb-2">Une erreur est survenue</h2>
+          <p class="text-text-3 text-sm mb-3 leading-relaxed">
+            La génération n'a pas pu aboutir.
+          </p>
+
+          <div class="mb-8 px-4 py-3 bg-surface-1 border border-border rounded-lg text-left">
+            <p class="text-text-3 text-xs font-mono leading-relaxed break-words">{{ generationError }}</p>
+          </div>
+
+          <div class="flex flex-col gap-2.5">
+            <BaseButton size="lg" class="w-full" @click="retry">
+              <RefreshCw class="w-4 h-4" />
+              Réessayer
+            </BaseButton>
+            <RouterLink to="/configurateur" class="block">
+              <BaseButton variant="secondary" size="md" class="w-full">
+                <Settings class="w-3.5 h-3.5" />
+                Modifier les paramètres
+              </BaseButton>
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -158,7 +197,7 @@
                     <div class="config-badge config-badge--done"><Sparkles class="w-4 h-4" /></div>
                     <div>
                       <p class="font-display font-semibold text-text">Après — Fresque IA</p>
-                      <p class="text-text-3 text-xs">Générée en ~2.5 secondes</p>
+                      <p class="text-text-3 text-xs">Générée par Gemini AI</p>
                     </div>
                   </div>
                   <span class="req-badge req-badge--success">Nouveau</span>
@@ -194,7 +233,7 @@
                     </div>
                     <div>
                       <p class="font-display font-semibold text-text text-sm">Fresque générée</p>
-                      <p class="text-text-3 text-xs font-mono">⚡ En ~2.5 secondes</p>
+                      <p class="text-text-3 text-xs font-mono">⚡ Générée par Gemini</p>
                     </div>
                   </div>
                   <div class="flex flex-col gap-2.5">
@@ -302,7 +341,7 @@
 import { ref, onMounted } from 'vue'
 import {
   ChevronRight, Check, CheckCircle2, Circle,
-  Sparkles, ImageIcon, RefreshCw, Settings, FileText,
+  Sparkles, ImageIcon, RefreshCw, Settings, FileText, AlertTriangle,
 } from 'lucide-vue-next'
 import { useRequestStore } from '@/stores/request.js'
 import { generateFresco } from '@/mocks/api.js'
@@ -313,6 +352,7 @@ import BlechEsmLoader from '@/components/ui/BlechEsmLoader.vue'
 const store = useRequestStore()
 const isLoading = ref(false)
 const regenerating = ref(false)
+const generationError = ref(null)
 
 const funnelSteps = [
   { label: 'Configurer',     color: '#FB923C' },
@@ -323,7 +363,7 @@ const funnelSteps = [
 const stickers = [
   { label: 'Avant / Après',   color: '#3D7BFF', rotate: -3 },
   { label: 'Généré par IA',   color: '#4ADE80', rotate:  2 },
-  { label: '~2 secondes',     color: '#F472B6', rotate: -2 },
+  { label: 'Gemini AI',        color: '#F472B6', rotate: -2 },
   { label: 'Art Mural',       color: '#FB923C', rotate:  2 },
 ]
 
@@ -341,9 +381,12 @@ onMounted(() => {
 
 async function runGeneration() {
   isLoading.value = true
+  generationError.value = null
   try {
-    const url = await generateFresco(store.wallPhoto, store.referencePhoto, store.description)
+    const url = await generateFresco(store.wallPhoto, store.referencePhoto, store.description, store.serviceType)
     store.setGeneratedImage(url)
+  } catch (err) {
+    generationError.value = err.message ?? 'Une erreur est survenue lors de la génération.'
   } finally {
     isLoading.value = false
   }
@@ -351,15 +394,23 @@ async function runGeneration() {
 
 async function regenerate() {
   regenerating.value = true
+  generationError.value = null
   store.setGeneratedImage(null)
   isLoading.value = true
   try {
-    const url = await generateFresco(store.wallPhoto, store.referencePhoto, store.description)
+    const url = await generateFresco(store.wallPhoto, store.referencePhoto, store.description, store.serviceType)
     store.setGeneratedImage(url)
+  } catch (err) {
+    generationError.value = err.message ?? 'Une erreur est survenue lors de la génération.'
   } finally {
     regenerating.value = false
     isLoading.value = false
   }
+}
+
+async function retry() {
+  generationError.value = null
+  await runGeneration()
 }
 </script>
 
@@ -572,7 +623,7 @@ async function regenerate() {
 .check-row--done { color: var(--color-success); }
 
 /* ── Loading bar ────────────────────────────────────────────────── */
-.loading-bar { animation: progress 2.5s ease-in-out forwards; }
+.loading-bar { animation: progress 75s cubic-bezier(0.1, 0.4, 0.2, 1) forwards; }
 @keyframes progress { from { width: 0%; } to { width: 92%; } }
 
 .animate-spin { animation: spin 1s linear infinite; }
